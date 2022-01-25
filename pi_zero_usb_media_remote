@@ -1,0 +1,26 @@
+#!/bin/bash
+
+CONFIGS_HOME=/sys/kernel/config
+GADGET_NAME=g1
+NAME=c
+NUMBER=1
+FUNC_NAME=hid
+INSTANCE_NAME=usb0
+BASE=${CONFIGS_HOME}/usb_gadget/${GADGET_NAME}
+
+mkdir -p ${BASE}/
+cd ${BASE}/
+echo 0x1d6b > idVendor
+echo 0x0104 > idProduct
+
+mkdir -p ${BASE}/configs/${NAME}.${NUMBER}/
+mkdir -p ${BASE}/functions/${FUNC_NAME}.${INSTANCE_NAME}/
+cd ${BASE}/functions/${FUNC_NAME}.${INSTANCE_NAME}/
+echo 0 > protocol
+echo 0 > subclass
+echo 1 > report_length
+echo -ne \\x05\\x0C\\x09\\x01\\xA1\\x01\\x75\\x10\\x95\\x01\\x15\\x00\\x26\\xFF\\x03\\x19\\x00\\x2A\\xFF\\x03\\x81\\x00\\xC0 > report_desc
+
+cd ${BASE}/
+ln -s functions/${FUNC_NAME}.${INSTANCE_NAME} configs/${NAME}.${NUMBER}
+ls /sys/class/udc > UDC
