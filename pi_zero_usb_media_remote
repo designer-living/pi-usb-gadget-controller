@@ -24,3 +24,4 @@ echo -ne \\x05\\x0C\\x09\\x01\\xA1\\x01\\x75\\x10\\x95\\x01\\x15\\x00\\x26\\xFF\
 cd ${BASE}/
 ln -s functions/${FUNC_NAME}.${INSTANCE_NAME} configs/${NAME}.${NUMBER}
 ls /sys/class/udc > UDC
+chmod 777 /dev/hidg0
