@@ -1,0 +1,9 @@
+[Unit]
+Description=USB Media Remote
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/pi_zero_usb_media_remote
+
+[Install]
+WantedBy=multi-user.target
