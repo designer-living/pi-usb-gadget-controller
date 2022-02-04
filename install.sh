@@ -13,3 +13,10 @@ sudo chmod +x /usr/bin/pi_zero_usb_media_remote
 sudo cp ./usb_media_remote.service /lib/systemd/system/usb_media_remote.service
 sudo systemctl daemon-reload
 sudo systemctl enable usb_media_remote.service
+
+# Set the Server to listen for commands on startup
+sudo cp ./UsbHidServer.py /usr/bin/UsbHidServer.py
+sudo chmod +x /usr/bin/UsbHidServer.py
+sudo cp ./usb_hid_server.service  /lib/systemd/system/usb_hid_server.service
+sudo systemctl daemon-reload
+sudo systemctl enable usb_hid_server.service
