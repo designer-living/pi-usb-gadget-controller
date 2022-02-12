@@ -19,7 +19,7 @@ class UsbHidProtocol(asyncio.Protocol):
         "MUTE": bytes((226,)) + NULL_CHAR,
     }
 
-    def __init__(self, keep_usb_open=True, delimiter=ord('\n'), device='/dev/hidg0'):
+    def __init__(self, keep_usb_open=False, delimiter=ord('\n'), device='/dev/hidg0'):
         self._logger = logging.getLogger(__name__)
         self._delimiter = delimiter
         self._device = device
@@ -97,4 +97,5 @@ async def main():
         await server.serve_forever()
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
