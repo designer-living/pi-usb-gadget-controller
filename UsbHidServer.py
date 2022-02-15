@@ -39,8 +39,8 @@ class UsbHidProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         message = data.decode()
+        self._logger.debug(f"Packet received: {message}")
         for letter in message:
-            self._logger.debug(f"Letter: {letter} : {ord(letter) != self._delimiter}")
             if ord(letter) != self._delimiter:
                 self._received_message += letter
             else:
@@ -52,6 +52,9 @@ class UsbHidProtocol(asyncio.Protocol):
         self._logger.debug(f"Sending key {packet} : {action} ")
         if action is not None:
             self._press_key(action)
+        elif packet == '\n':
+            # This is used for heartbeats so do nothing but also no need to log
+            pass
         else:
             self._logger.warning(f"No key mapping for command {packet}")
 
