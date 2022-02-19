@@ -13,6 +13,11 @@ cd ${BASE}/
 echo 0x1d6b > idVendor
 echo 0x0104 > idProduct
 
+mkdir -p strings/0x409
+echo "0123456789abcdef" > strings/0x409/serialnumber
+echo "Pi Zero USB Gadget" > strings/0x409/manufacturer
+echo "Pi Zero USB Gadget" > strings/0x409/product
+
 mkdir -p ${BASE}/configs/${NAME}.${NUMBER}/
 mkdir -p ${BASE}/functions/${FUNC_NAME}.${INSTANCE_NAME}/
 cd ${BASE}/functions/${FUNC_NAME}.${INSTANCE_NAME}/
@@ -21,7 +26,13 @@ echo 0 > subclass
 echo 1 > report_length
 echo -ne \\x05\\x0C\\x09\\x01\\xA1\\x01\\x75\\x10\\x95\\x01\\x15\\x00\\x26\\xFF\\x03\\x19\\x00\\x2A\\xFF\\x03\\x81\\x00\\xC0 > report_desc
 
+mkdir -p ${BASE}/functions/uac2.${INSTANCE_NAME}/
+#cd ${BASE}/functions/uac2.${INSTANCE_NAME}/
+#ln -s functions/uac2.${INSTANCE_NAME} configs/${NAME}.${NUMBER}
+
+
 cd ${BASE}/
 ln -s functions/${FUNC_NAME}.${INSTANCE_NAME} configs/${NAME}.${NUMBER}
+ln -s functions/uac2.${INSTANCE_NAME} configs/${NAME}.${NUMBER}
 ls /sys/class/udc > UDC
 chmod 777 /dev/hidg0
