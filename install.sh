@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo apt-get install -y alsa-utils
+
 # Set required settings and modules
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
 echo "dwc2" | sudo tee -a /etc/modules
