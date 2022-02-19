@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo apt-get install -y alsa-utils
+# Install required debian software
+sudo apt-get install -y alsa-utils python3 python3-pip
 
 # Set required settings and modules
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
