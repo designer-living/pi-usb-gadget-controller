@@ -26,6 +26,7 @@ keys = {
     "BACK": bytes((36,))+bytes((2,)),
     "PLAY": bytes((205,))+NULL_CHAR,
     "MUTE": bytes((226,))+NULL_CHAR,
+    "MIC": bytes((207,))+NULL_CHAR,
 }
 
 
