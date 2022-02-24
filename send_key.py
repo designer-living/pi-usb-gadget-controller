@@ -59,9 +59,9 @@ def key_down(key, fd):
 def key_release(fd):
     send_key(fd, NULL_CHAR * 2)
 
-
-if len(sys.argv) != 2:
+if __name__ == '__main__':
+  if len(sys.argv) != 2:
     print_usage()
 
-press_key(sys.argv[1])
-print("Done")
+  press_key(sys.argv[1])
+  print("Done")
