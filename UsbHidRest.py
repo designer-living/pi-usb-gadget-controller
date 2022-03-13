@@ -21,8 +21,9 @@ def root():
       <li><a href="/left">LEFT</a></li>
       <li><a href="/right">RIGHT</a></li>
       <li><a href="/select">SELECT</a></li>
+      <li><a href="/home">HOME</a></li>
+      <li><a href="/back">BACK</a></li>
       <li><a href="/play">PLAY/PAUSE</a></li>
-      </ul>
       </body>
       </html>
       """
@@ -39,10 +40,10 @@ class KeyPresser(Resource):
 
 
 
-class Play(Resource):
-    def get(self):
-        press_key('PLAY')
-        return {'hello': 'world'}
+#class Play(Resource):
+#    def get(self):
+#        press_key('PLAY')
+#        return {'hello': 'world'}
 
 
 #api.add_resource(Root, '/')
