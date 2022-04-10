@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo pip3 install -r ./requirements.txt
+#sudo pip3 install -r ./requirements.txt
 sudo cp ./UsbHidRest.py /usr/bin/UsbHidRest.py
 sudo cp ./send_key.py /usr/bin/send_key.py
 sudo chmod +x /usr/bin/UsbHidRest.py
