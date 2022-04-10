@@ -62,6 +62,7 @@ class SendGadgetDevice():
             with open(self._device, 'rb+') as fd:
                 self._key_down(action, fd)
                 self._key_release(fd)
+        return action
 
     def key_down(self, key):
         action = self._get_bytes_to_send(key)
@@ -72,6 +73,7 @@ class SendGadgetDevice():
             # If we find a long running connection causes an issue we can just open on each key press.
             with open(self._device, 'rb+') as fd:
                 self._key_down(action, fd)
+        return action
 
     def key_release(self):
         self._logger.debug(f"Releasing keys")
@@ -106,4 +108,6 @@ def main():
 #   print("Done")
   device = '/dev/hidg0'
   sender = SendGadgetDevice(device)
-  sender.press_key(sys.argv[1])
+  action = sender.press_key(sys.argv[1])
+  if action is None:
+      print_usage()
