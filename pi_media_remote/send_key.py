@@ -95,7 +95,7 @@ class SendGadgetDevice():
         else:
             # If we find a long running connection causes an issue we can just open on each key press.
             with open(self._device, 'rb+') as fd:
-                self._key_down(key, fd)
+                self._key_down(action, fd)
                 self._key_release(fd)
 
     def key_down(self, key):
@@ -106,7 +106,7 @@ class SendGadgetDevice():
         else:
             # If we find a long running connection causes an issue we can just open on each key press.
             with open(self._device, 'rb+') as fd:
-                self._key_down(key, fd)
+                self._key_down(action, fd)
 
     def key_release(self):
         self._logger.debug(f"Releasing keys")
