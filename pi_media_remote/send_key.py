@@ -133,7 +133,7 @@ class SendGadgetDevice():
             fd.write(action)
 
 
-if __name__ == '__main__':
+def main():
   logging.basicConfig(level=logging.INFO)
   if len(sys.argv) != 2:
     print_usage()
