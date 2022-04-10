@@ -1,2 +1,5 @@
 venv/*
 **/__pycache__/*
+build/*
+dist/*
+pi_media_remote.egg-info/*

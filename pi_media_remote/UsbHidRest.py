@@ -2,7 +2,6 @@
 
 from flask import Flask, redirect
 from flask_restful import Resource, Api
-import os
 from pi_media_remote.send_key import SendGadgetDevice, press_key
 from html import HOME
 
@@ -44,18 +43,10 @@ class KeyPresser(Resource):
 
     def get(self):
         gadget_device.press_key(self.key)
-        # press_key(self.key)
         return redirect(redirect_link)
 
 
 
-#class Play(Resource):
-#    def get(self):
-#        press_key('PLAY')
-#        return {'hello': 'world'}
-
-
-#api.add_resource(Root, '/')
 api.add_resource(KeyPresser, '/up', endpoint="up", resource_class_kwargs={'key': 'UP'})
 api.add_resource(KeyPresser, '/down', endpoint="down", resource_class_kwargs={'key': 'DOWN'})
 api.add_resource(KeyPresser, '/left', endpoint="left", resource_class_kwargs={'key': 'LEFT'})
