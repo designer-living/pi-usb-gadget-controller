@@ -49,7 +49,7 @@ class UsbHidProtocol(asyncio.Protocol):
             self._gadget_device = None
 
 
-async def async_main():
+async def start_server():
     # Get a reference to the event loop as we plan to use
     # low-level APIs.
     loop = asyncio.get_running_loop()
@@ -57,6 +57,12 @@ async def async_main():
     server = await loop.create_server(
         lambda: UsbHidProtocol(),
         '0.0.0.0', 8888)
+    return server
+
+
+async def async_main():
+
+    server = await start_server()
 
     async with server:
         await server.serve_forever()
