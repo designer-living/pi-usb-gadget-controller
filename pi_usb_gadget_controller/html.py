@@ -64,7 +64,7 @@ JS_HOMEPAGE = """
                     <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('HOME')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
                     <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('PLAY')">&#9658;&par;</button>
                     <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('BACK')">&nbsp;&crarr;&nbsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&crarr;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&#128264;&nbsp;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -183,7 +183,7 @@ WS_HOMEPAGE = """
                     <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('HOME')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
                     <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('PLAY')">&#9658;&par;</button>
                     <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('BACK')">&nbsp;&crarr;&nbsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&crarr;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&#128264;&nbsp;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -275,7 +275,7 @@ HOMEPAGE_GET_REQUEST = """
                     <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/HOME" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a>
                     <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/PLAY" role="button">&#9658;&par;</a>
                     <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/BACK" role="button">&nbsp;&crarr;&nbsp;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/MUTE" role="button">&nbsp;&#9212;&nbsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/MUTE" role="button">&nbsp;&#128264;&nbsp;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
