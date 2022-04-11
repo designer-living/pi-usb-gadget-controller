@@ -40,10 +40,10 @@ async def async_main(socket_port, web_port, device):
 
 def main():
     parser = argparse.ArgumentParser(description="Send commands to a USB Gadget")
-    parser.add_argument("--device", action="store", help="The USB Gadget device e.g. /dev/hidg0", default='/dev/hidg0')
-    parser.add_argument("--web_port", type=int, action="store", help="The port to start the web_port on. NOTE if you specify a port here you also need to spcify a --socket_port otherwise the socket port won't be opened")
-    parser.add_argument("--socket_port", type=int, action="store", help="The port to start the socket server on. NOTE if you specify a port here you also need to spcify a --web_port otherwise the web  port won't be opened")
-    parser.add_argument("--logging", action="store", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='INFO', help="The logging level to use")
+    parser.add_argument("--device", action="store", help="The USB Gadget device. DEFAULTS to /dev/hidg0", default='/dev/hidg0')
+    parser.add_argument("--web_port", type=int, action="store", help="The port to start the web_port on. DEFAULTS to 8080. NOTE if you specify a port here you also need to spcify a --socket_port otherwise the socket port won't be opened")
+    parser.add_argument("--socket_port", type=int, action="store", help="The port to start the socket server on. DEFAULTS to 8888. NOTE if you specify a port here you also need to spcify a --web_port otherwise the web  port won't be opened")
+    parser.add_argument("--logging", action="store", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='INFO', help="The logging level to use. DEFAULTS to INFO")
     args = parser.parse_args()
     config = vars(args)
 
