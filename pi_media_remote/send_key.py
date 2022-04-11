@@ -52,37 +52,47 @@ class SendGadgetDevice():
         return action
 
     def press_key(self, key):
-        action = self._get_bytes_to_send(key)
-        self._logger.debug(f"Pressing key {key} : {action} ")
-        if self._keep_usb_open:
-            self._key_down(action, self._fd)
-            self._key_release(self._fd)
-        else:
-            # If we find a long running connection causes an issue we can just open on each key press.
-            with open(self._device, 'rb+') as fd:
-                self._key_down(action, fd)
-                self._key_release(fd)
-        return action
+        try: 
+            action = self._get_bytes_to_send(key)
+            self._logger.debug(f"Pressing key {key} : {action} ")
+            if self._keep_usb_open:
+                self._key_down(action, self._fd)
+                self._key_release(self._fd)
+            else:
+                # If we find a long running connection causes an issue we can just open on each key press.
+                with open(self._device, 'rb+') as fd:
+                    self._key_down(action, fd)
+                    self._key_release(fd)
+            return True, action
+        except Exception as e:
+            return False, str(e)
 
     def key_down(self, key):
-        action = self._get_bytes_to_send(key)
-        self._logger.debug(f"Key Down {key} : {action} ")
-        if self._keep_usb_open:
-            self._key_down(action, self._fd)
-        else:
-            # If we find a long running connection causes an issue we can just open on each key press.
-            with open(self._device, 'rb+') as fd:
-                self._key_down(action, fd)
-        return action
+        try: 
+            action = self._get_bytes_to_send(key)
+            self._logger.debug(f"Key Down {key} : {action} ")
+            if self._keep_usb_open:
+                self._key_down(action, self._fd)
+            else:
+                # If we find a long running connection causes an issue we can just open on each key press.
+                with open(self._device, 'rb+') as fd:
+                    self._key_down(action, fd)
+            return action
+        except Exception as e:
+            return False, str(e)
 
     def key_release(self):
-        self._logger.debug(f"Releasing keys")
-        if self._keep_usb_open:
-            self._key_release(self._fd)
-        else:
-            # If we find a long running connection causes an issue we can just open on each key press.
-            with open(self._device, 'rb+') as fd:
-                self._key_release(fd)
+        try: 
+            self._logger.debug(f"Releasing keys")
+            if self._keep_usb_open:
+                self._key_release(self._fd)
+            else:
+                # If we find a long running connection causes an issue we can just open on each key press.
+                with open(self._device, 'rb+') as fd:
+                    self._key_release(fd)
+            return True, "Success"
+        except Exception as e:
+            return False, str(e)
 
     def _key_down(self, key, fd):
         self._send_key(key, fd)
@@ -108,6 +118,8 @@ def main():
 #   print("Done")
   device = '/dev/hidg0'
   sender = SendGadgetDevice(device)
-  action = sender.press_key(sys.argv[1])
-  if action is None:
+  success, action = sender.press_key(sys.argv[1])
+  if success and action is None:
       print_usage()
+  elif not success:
+      print(f"Error: {action}")
