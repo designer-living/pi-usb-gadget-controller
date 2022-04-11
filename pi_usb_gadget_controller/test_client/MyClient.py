@@ -39,6 +39,5 @@ async def main():
 
 
 if __name__ == '__main__':
-    logging.getLogger().setLevel(logging.INFO)
-    logging.basicConfig()
+    logging.basicConfig(level=logging.INFO)
     asyncio.run(main())

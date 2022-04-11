@@ -111,11 +111,9 @@ class SendGadgetDevice():
 
 
 def main():
-  logging.basicConfig(level=logging.INFO)
+  logging.basicConfig(level=logging.ERROR)
   if len(sys.argv) != 2:
     print_usage()
-#   press_key(sys.argv[1])
-#   print("Done")
   device = '/dev/hidg0'
   sender = SendGadgetDevice(device)
   success, action = sender.press_key(sys.argv[1])
