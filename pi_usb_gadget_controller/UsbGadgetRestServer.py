@@ -56,7 +56,7 @@ class UsbGadgetRestServer():
     async def key_handler(self, request):
         key = request.match_info.get('key', None)
         logging.info(f"Key: {key}")
-        message = self.send_key(key.upper())
+        message = self.send_key(key)
         return web.json_response(message)
 
     async def websocket_handler(self, request):
@@ -70,7 +70,7 @@ class UsbGadgetRestServer():
                     await ws.close()
                 else:
                     logging.info(f"Msg: {msg.data}")
-                    message = self.send_key(msg.data.upper())
+                    message = self.send_key(msg.data)
                     await ws.send_json(message)
             elif msg.type == aiohttp.WSMsgType.ERROR:
                 self.logger.error(f'ws connection closed with exception {ws.exception()}')
@@ -81,7 +81,7 @@ class UsbGadgetRestServer():
     async def get_key_handler(self, request):
         key = request.match_info.get('key', None)
         logging.info(f"Key: {key}")
-        message = self.send_key(key.upper())
+        message = self.send_key(key)
         raise web.HTTPFound('/get')
 
 

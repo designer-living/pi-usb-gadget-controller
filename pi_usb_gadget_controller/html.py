@@ -26,7 +26,7 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10">
-                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('up')">&uarr;</button>
+                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('UP')">&uarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -37,9 +37,9 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('left')">&larr;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('select')"><small>ok</small></button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('right')">&rarr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('LEFT')">&larr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('SELECT')"><small>ok</small></button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('RIGHT')">&rarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -50,7 +50,7 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('down')">&darr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('DOWN')">&darr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -61,10 +61,10 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('home')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('play')">&#9658;&par;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('back')">&nbsp;&crarr;&nbsp;</button>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/" role="button">&nbsp;&#9212;&nbsp;</a>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('HOME')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('PLAY')">&#9658;&par;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('BACK')">&nbsp;&crarr;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&crarr;&nbsp;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -156,9 +156,9 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('left')">&larr;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('select')"><small>ok</small></button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('right')">&rarr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('LEFT')">&larr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('SELECT')"><small>ok</small></button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('RIGHT')">&rarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -169,7 +169,7 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('down')">&darr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('DOWN')">&darr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -180,10 +180,10 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('home')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('play')">&#9658;&par;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('back')">&nbsp;&crarr;&nbsp;</button>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/" role="button">&nbsp;&#9212;&nbsp;</a>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('HOME')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('PLAY')">&#9658;&par;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('BACK')">&nbsp;&crarr;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&crarr;&nbsp;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -236,7 +236,7 @@ HOMEPAGE_GET_REQUEST = """
                     &emsp;
                 </div>
                 <div class="col-10">
-                    <a class="btn btn-dark btn-lg text-light btn-outline-primary" href="/get/up" role="button">&uarr;</a>
+                    <a class="btn btn-dark btn-lg text-light btn-outline-primary" href="/get/UP" role="button">&uarr;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -247,9 +247,9 @@ HOMEPAGE_GET_REQUEST = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/left" role="button">&larr;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/select" role="button"><small>ok</small></a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/right" role="button">&rarr;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/LEFT" role="button">&larr;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/SELECT" role="button"><small>ok</small></a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/RIGHT" role="button">&rarr;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -260,7 +260,7 @@ HOMEPAGE_GET_REQUEST = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/down" role="button">&darr;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/DOWN" role="button">&darr;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -272,10 +272,10 @@ HOMEPAGE_GET_REQUEST = """
                 </div>
                 <div class="col">
 
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/home" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/play" role="button">&#9658;&par;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/back" role="button">&nbsp;&crarr;&nbsp;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/home" role="button">&nbsp;&#9212;&nbsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/HOME" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/PLAY" role="button">&#9658;&par;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/BACK" role="button">&nbsp;&crarr;&nbsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/MUTE" role="button">&nbsp;&#9212;&nbsp;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
