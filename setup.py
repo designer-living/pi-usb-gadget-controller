@@ -39,6 +39,5 @@ setup(
     url = "https://github.com/foxy82/pi-media-remote",
     install_requires = [
             'aiohttp',
-            'Flask-RESTful',
         ],
     )

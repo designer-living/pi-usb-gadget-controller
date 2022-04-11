@@ -1,9 +1,0 @@
-[Unit]
-Description=USB Media Remote
-After=multi-user.target
-
-[Service]
-ExecStart=/usr/local/bin/UsbHidServer
-
-[Install]
-WantedBy=multi-user.target
