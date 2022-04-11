@@ -2,4 +2,4 @@ venv/*
 **/__pycache__/*
 build/*
 dist/*
-pi_media_remote.egg-info/*
+pi_usb_gadget_controller.egg-info/*

@@ -24,7 +24,7 @@ sudo apt-get install git python3
 Then clone this repo
 
 ```
-git clone https://github.com/foxy82/pi-media-remote.git
+git clone https://github.com/foxy82/pi-usb-gadget-controller.git
 ```
 
 To install run ```./install.sh```. Shutdown the pi and then connect it to the device to be controlled using a *data* usb cable and using the *data* usb port on the Pi Zero (the one nearest the HDMI port on Zero W and Zero W2)
