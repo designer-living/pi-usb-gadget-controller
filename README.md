@@ -78,6 +78,10 @@ The best bet is to just write a brand new OS onto the SD card however if you do 
 
 Things i'm working on for this:
 
+* Make it configurable including
+    * Configurable device
+    * Configurable ports
+    * Ability to start only one of the servers 
 * Package on to pypi
 * V2 of the API to allow pressing and holding as well as allow keyboard keys to be sent.
 * A seperate app which will take input from a 2.4 GHz USB remote and transmit it to this app
