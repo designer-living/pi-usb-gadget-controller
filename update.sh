@@ -5,9 +5,9 @@
 
 
 sudo service usb_hid_server stop
-sudo service usb_media_remote stop
+sudo service usb_rest_server stop
 
-sudo python3 setup.py install
+sudo python3 setup.py install --force
 
 sudo service usb_hid_server start
-sudo service usb_media_remote start
+sudo service usb_rest_server start

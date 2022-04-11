@@ -3,7 +3,7 @@ Description=USB Media Remote
 After=multi-user.target
 
 [Service]
-ExecStart=/usr/bin/UsbHidRest.py
+ExecStart=/usr/local/bin/UsbHidRest
 
 [Install]
 WantedBy=multi-user.target
