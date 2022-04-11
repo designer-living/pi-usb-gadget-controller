@@ -32,6 +32,7 @@ setup(
     license='Apache 2.0',
     description = "Application to take commands and send via USB to a Media device like a FireTV or Andriod TV with ChromeCast",
     long_description = long_descr,
+    long_description_content_type='text/markdown',
     author = "Foxy82",
     author_email = "foxy82.github@gmail.com",
     url = "https://github.com/foxy82/pi-usb-gadget-controller",
