@@ -42,6 +42,24 @@ This app provides several ways to receive commands and currently supports the fo
 * PLAY
 * MUTE
 
+The app will be installed as a service by the install script but can also be run from the command line where options can be provided:
+
+```
+$ UsbGadgetController -h
+usage: UsbGadgetController [-h] [--device DEVICE] [--web_port WEB_PORT] [--socket_port SOCKET_PORT] [--logging {DEBUG,INFO,WARNING,ERROR}]
+
+Send commands to a USB Gadget
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --device DEVICE       The USB Gadget device e.g. /dev/hidg0
+  --web_port WEB_PORT   The port to start the web_port on. NOTE if you specify a port here you also need to spcify a --socket_port otherwise the socket port won't be opened
+  --socket_port SOCKET_PORT
+                        The port to start the socket server on. NOTE if you specify a port here you also need to spcify a --web_port otherwise the web port won't be opened
+  --logging {DEBUG,INFO,WARNING,ERROR}
+                        The logging level to use
+```
+
 ### Socket interface
 
 A socket interface is provided on port 8888 (by default) it takes the key to press in upper case e.g. UP,DOWN
