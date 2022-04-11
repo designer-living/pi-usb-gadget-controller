@@ -145,7 +145,7 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10">
-                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('up')">&uarr;</button>
+                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('UP')">&uarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
