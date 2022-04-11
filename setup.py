@@ -25,8 +25,9 @@ setup(
     entry_points = {
             "console_scripts": [
                 # TODO consolidate this into one app
-                'UsbHidRest = pi_media_remote.UsbHidRest:main',
-                'UsbHidServer = pi_media_remote.UsbHidServer:main',
+                'UsbGadgetRestServer = pi_media_remote.UsbGadgetRestServer:main',
+                'UsbGadgetSocketServer = pi_media_remote.UsbGadgetSocketServer:main',
+                'UsbGadgetController = pi_media_remote.UsbGadgetController:main',
                 'send_key = pi_media_remote.send_key:main',
             ]
         },

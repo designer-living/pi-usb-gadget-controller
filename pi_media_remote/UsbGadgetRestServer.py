@@ -80,6 +80,7 @@ app.router.add_get('/get/{key}', get_key_handler)
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     loop = asyncio.get_event_loop()
     handler = app.make_handler()
     f = loop.create_server(handler, '0.0.0.0', 8080)

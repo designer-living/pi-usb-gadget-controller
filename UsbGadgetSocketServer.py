@@ -5,7 +5,7 @@
 """Convenience wrapper for running UsbHidServer directly from source tree."""
 
 import logging
-from pi_media_remote.UsbHidServer import main
+from pi_media_remote.UsbGadgetSocketServer import main
 
 
 if __name__ == '__main__':

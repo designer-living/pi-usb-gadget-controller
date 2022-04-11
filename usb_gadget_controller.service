@@ -1,0 +1,9 @@
+[Unit]
+Description=USB Media Remote
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/UsbGadgetController
+
+[Install]
+WantedBy=multi-user.target

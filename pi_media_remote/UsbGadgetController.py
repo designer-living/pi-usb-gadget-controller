@@ -1,19 +1,25 @@
 import asyncio
 import logging
-from pi_media_remote.UsbHidServer import start_server
-from pi_media_remote.UsbHidRest import main as rest_main
+from pi_media_remote.UsbGadgetSocketServer import UsbHidProtocol
+from pi_media_remote.UsbGadgetRestServer import app
+
 
 async def async_main():
-    server = await start_server()
-    await server.start_serving()
+    # Get a reference to the event loop as we plan to use
+    # low-level APIs.
+    loop = asyncio.get_running_loop()
 
+    logging.info("Starting socket server")
+    socket_server = await loop.create_server(
+        lambda: UsbHidProtocol(),
+        '0.0.0.0', 8888)
 
-    # async with server:
-    #     await server.serve_forever()
+    logging.info("Starting web/rest/ws server")
+    handler = app.make_handler()
+    rest_server = await loop.create_server(handler, '0.0.0.0', 8080)
 
-    
+    await asyncio.Event().wait()
+
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
     asyncio.run(async_main())
-    rest_main()

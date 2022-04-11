@@ -1,6 +1,6 @@
 import logging
 
-from ReconnectingProtocol import ReconnectingProtocol
+from pi_media_remote.test_client.ReconnectingProtocol import ReconnectingProtocol
 import asyncio
 import sys
 
