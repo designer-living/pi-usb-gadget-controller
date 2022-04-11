@@ -16,7 +16,7 @@ async def key_handler(request):
     logging.info(f"Key: {key}")
     if key is None:
         return web.Response(text=HOMEPAGE,  content_type='text/html')
-    gadget_device.press_key(key)
+    gadget_device.press_key(key.upper())
     return web.Response(text="Done")
 
 app = web.Application()
