@@ -1,7 +1,7 @@
 import asyncio
 import logging
-from pi_media_remote.UsbGadgetSocketServer import UsbHidProtocol
-from pi_media_remote.UsbGadgetRestServer import app
+from pi_usb_gadget_controller.UsbGadgetSocketServer import UsbHidProtocol
+from pi_usb_gadget_controller.UsbGadgetRestServer import app
 
 
 async def async_main():

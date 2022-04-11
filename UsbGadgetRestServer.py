@@ -5,7 +5,7 @@
 """Convenience wrapper for running UsbGadgetRestServer directly from source tree."""
 
 import logging 
-from pi_media_remote.UsbGadgetRestServer import main
+from pi_usb_gadget_controller.UsbGadgetRestServer import main
 
 
 if __name__ == '__main__':

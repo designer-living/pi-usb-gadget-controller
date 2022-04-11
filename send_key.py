@@ -3,7 +3,7 @@
  
 """Convenience wrapper for running send_keys directly from source tree."""
  
-from pi_media_remote.send_key import main
+from pi_usb_gadget_controller.send_key import main
  
  
 if __name__ == '__main__':

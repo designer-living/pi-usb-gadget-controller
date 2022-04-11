@@ -2,7 +2,7 @@
 import asyncio
 import logging
 
-from pi_media_remote.send_key import SendGadgetDevice
+from pi_usb_gadget_controller.send_key import SendGadgetDevice
 
 
 class UsbHidProtocol(asyncio.Protocol):

@@ -2,8 +2,8 @@ import asyncio
 import logging
 import aiohttp
 from aiohttp import web
-from pi_media_remote.send_key import SendGadgetDevice
-from pi_media_remote.html import JS_HOMEPAGE, HOMEPAGE_GET_REQUEST, WS_HOMEPAGE
+from pi_usb_gadget_controller.send_key import SendGadgetDevice
+from pi_usb_gadget_controller.html import JS_HOMEPAGE, HOMEPAGE_GET_REQUEST, WS_HOMEPAGE
 
 logger = logging.getLogger(__name__)
 gadget_device = SendGadgetDevice('/dev/hidg0')
