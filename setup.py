@@ -29,7 +29,7 @@ setup(
             ]
         },
     version = version,
-    license='Apache 2.0'
+    license='Apache 2.0',
     description = "Application to take commands and send via USB to a Media device like a FireTV or Andriod TV with ChromeCast",
     long_description = long_descr,
     author = "Foxy82",
