@@ -54,7 +54,7 @@ sudo pip3 install pi_usb_gadget_controller
 
 ```
 cd ~/pi-usb-gadget-controller
-sudo python3 setup.py install
+sudo pip3 install .
 ```
 
 ### Running
@@ -92,7 +92,7 @@ optional arguments:
 You can install the server as a service to run on start up:
 ```
 cd ~/pi-usb-gadget-controller
-sudo ./install_Service.sh
+sudo ./install_service.sh
 ```
 
 This will use the default options. To change the options edit ```~/pi-usb-gadget-controller/usb_gadget_controller.service```  and edit the ```ExecStart``` line then run ```./install_service.sh``` (first install) or ```./update_service.sh``` (updating)
@@ -144,9 +144,15 @@ This is a work in progress so there might be times when updating is more complex
 
 ## Uninstall
 
-The best bet is to just write a brand new OS onto the SD card however if you do need to remove have a look at ```uninstall_service.sh``` and ```uninstall_usb_gadget.sh```  which removes some files and guides you on other changes needed to remove this.
+The best bet is to just write a brand new OS onto the SD card however if you do need to remove...
 
-You will also need to do a ```pip uninstall pi_usb_gadget_controller```
+```
+cd ~/pi-usb-gadget-controller
+sudo ./uninstall_service.sh # Only if you installed this as a service
+sudo ./uninstall_usb_gadget.sh # Follow the additional instructions
+sudo pip uninstall pi_usb_gadget_controller
+```
+
 
 ## Roadmap
 
