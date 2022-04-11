@@ -8,14 +8,15 @@ This repo allows you to make a Pi Zero W (2) appear as a USB media remote contro
 
 1. A Rasberry Pi Zero W or Rasberry Pi Zero W 2 (it may also work with a Pi 4 but I've not tested this)
 1. A way to connect the Pi Zero to the device to be controlled.
-    * For [Fire TV](https://www.amazon.co.uk/gp/product/B08MQZYSVC/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B08MQZYSVC&linkCode=as2&tag=foxy82-21&linkId=515ca2c069563973ff420dad6d0b9333) I used this cable: [FireTv OTG Cable](https://www.amazon.co.uk/gp/product/B08Q36HB3G/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=253509fffa53c07250e71ebdd6feae26&camp=1634&creative=6738)
-    * For Google Ghromecast with Android TV I use this adapter: [Chromecast with Google TV OTG Cable](https://www.amazon.co.uk/gp/product/B08Q36HB3G/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=fcd6d2731b8e1ad8d854ba923336bb38&camp=1634&creative=6738)
+    * For [Fire TV](https://www.amazon.co.uk/gp/product/B07M83762Y/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=acf241e9ea2e454f9e9116b9aa54ad7a&camp=1634&creative=6738) I used this cable: [FireTv OTG Cable](https://www.amazon.co.uk/gp/product/B08Q36HB3G/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=253509fffa53c07250e71ebdd6feae26&camp=1634&creative=6738)
+    * For Google Ghromecast with Android TV I use this adapter: [Chromecast with Google TV OTG Cable](https://www.amazon.co.uk/gp/product/B08Q36HB3G/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=fcd6d2731b8e1ad8d854ba923336bb38&camp=1634&creative=6738). This also allows you to use Wired Ethernet
 
 ## Installation
 
-First install a minimal Linux OS on the Raspberry Pi Zero
+First install a minimal Linux OS on the Raspberry Pi Zero - I use [DietPi](https://dietpi.com/) with no extra software installed and connect it to your WiFi.
 
-First get required Linux packages:
+Then get required Linux packages:
+
 ```
 sudo apt-get install git python3
 ```
@@ -27,6 +28,43 @@ git clone https://github.com/foxy82/pi-media-remote.git
 ```
 
 To install run ```./install.sh```. Shutdown the pi and then connect it to the device to be controlled using a *data* usb cable and using the *data* usb port on the Pi Zero (the one nearest the HDMI port on Zero W and Zero W2)
+
+## Usage 
+
+This app provides several ways to receive commands and currently supports the following:
+* UP
+* DOWN
+* LEFT
+* RIGHT
+* SELECT
+* HOME
+* BACK
+* PLAY
+* MUTE
+
+### Socket interface
+
+A socket interface is provided on port 8888 (by default) it takes the key to press in upper case e.g. UP,DOWN
+
+### Websocket interface
+
+A websocket interface is provided at http://ip:8080/ws it will take the commands in uppercase e.g. UP, DOWN
+
+### Rest API
+
+A REST API is provided by doing a GET at http://ip:8080/rest/<command> where command is the key to send e.g. UP, DOWN
+
+### GET Requests
+
+You can also do plain GET requests to http://ip:8080/get/<command> where command is the key to send e.g. UP, DOWN. This call will provide a redirect to a web page (see below)
+
+### Web Page
+
+The app also provides 3 web pages with remote buttons to click and send commands:
+* http://ip:8080 - is a web page using web socket for communication - it should be the fastest to use
+* http://ip:8080/js - is a web page that uses JavaScript to make REST calls in the background - I have sometimes seen Chrome take up to 1+ seconds to actually send the command so WebSocket is prefered if you can use that.
+* http://ip:8080/get - Sends GET requests and reloads the page on every click. Likely to be slow but will work if you don't want to use JavaScript or WebSockets.
+
 
 ## Update
 
@@ -40,9 +78,11 @@ The best bet is to just write a brand new OS onto the SD card however if you do 
 
 Things i'm working on for this:
 
+* Package on to pypi
 * V2 of the API to allow pressing and holding as well as allow keyboard keys to be sent.
 * A seperate app which will take input from a 2.4 GHz USB remote and transmit it to this app
 * Using a [Pulse Eight USB CEC Adapter](https://www.amazon.co.uk/Pulse-Eight-na-USB-CEC-Adapter/dp/B005JU6LWM/ref=sr_1_1?crid=N8E5OFI7LAC3&amp;keywords=pulse+eight+USB+CEC&amp;qid=1649681621&amp;sprefix=pulse+eight+usb+cec%252Caps%252C57&amp;sr=8-1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=9de6a10b778cb0ef9814579952996036&camp=1634&creative=6738) to take CEC commands and send it to this app.
+* Moonshot - can we add a way for a mic to send us audio data so that we could do a voice search? 
 
 ## Useful links
 
