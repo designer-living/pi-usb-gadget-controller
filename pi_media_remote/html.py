@@ -12,6 +12,13 @@ HOMEPAGE = """
 <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
 <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 <!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+    <script>
+        function send_button(button) {
+            fetch('/' + button)
+              .then(response => response.json())
+              .then(data => console.log(data));
+        } 
+    </script>
 </head>
 <body class="bg-dark">
     <br>
@@ -22,7 +29,8 @@ HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10">
-                    <a class="btn btn-dark btn-lg text-light btn-outline-primary" href="/up" role="button">&uarr;</a>
+                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('up')">&uarr;</button>
+<!--                    <a class="btn btn-dark btn-lg text-light btn-outline-primary" href="/up" role="button">&uarr;</a> -->
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -33,9 +41,13 @@ HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/left" role="button">&larr;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/select" role="button"><small>ok</small></a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/right" role="button">&rarr;</a>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('left')">&larr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('select')"><small>ok</small></button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('right')">&rarr;</button>
+
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/left" role="button">&larr;</a> -->
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/select" role="button"><small>ok</small></a> -->
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/right" role="button">&rarr;</a> -->
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -46,7 +58,8 @@ HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/down" role="button">&darr;</a>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('down')">&darr;</button>
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/down" role="button">&darr;</a> -->
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -57,9 +70,14 @@ HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/home" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/play" role="button">&#9658;&par;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/back" role="button">&nbsp;&crarr;&nbsp;</a>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('home')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('play')">&#9658;&par;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('back')">&nbsp;&crarr;&nbsp;</button>
+<!--                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" href="/">&nbsp;&#9212;&nbsp;</button> -->
+
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/home" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a> -->
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/play" role="button">&#9658;&par;</a> -->
+<!--                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/back" role="button">&nbsp;&crarr;&nbsp;</a> -->
                     <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/" role="button">&nbsp;&#9212;&nbsp;</a>
                 </div>
                 <div class="col-1">

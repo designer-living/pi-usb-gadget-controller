@@ -2,8 +2,8 @@
 
 from flask import Flask, redirect
 from flask_restful import Resource, Api
-from pi_media_remote.send_key import SendGadgetDevice, press_key
-from html import HOME
+from pi_media_remote.send_key import SendGadgetDevice
+from pi_media_remote.html import HOMEPAGE
 
 app = Flask(__name__)
 api = Api(app)
@@ -33,7 +33,7 @@ def root():
 
 @app.route("/")
 def index2():
-    return HOME 
+    return HOMEPAGE
 
 
 class KeyPresser(Resource):
