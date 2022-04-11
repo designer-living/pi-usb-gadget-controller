@@ -3,7 +3,7 @@ import logging
 import aiohttp
 from aiohttp import web
 from pi_media_remote.send_key import SendGadgetDevice
-from pi_media_remote.html import HOMEPAGE, WS_HOMEPAGE
+from pi_media_remote.html import JS_HOMEPAGE, HOMEPAGE_GET_REQUEST, WS_HOMEPAGE
 
 logger = logging.getLogger(__name__)
 gadget_device = SendGadgetDevice('/dev/hidg0')
@@ -21,19 +21,28 @@ def get_return_message(success, action):
             message['message'] = f"Key not found {action}"
         else:
             message['message'] = f"Sent {action}"
-    return message        
+    return message
+
+
+def send_key(key):
+    success, action = gadget_device.press_key(key)
+    message = get_return_message(success, action)
+    return message
+
 
 async def handle(request):
     return web.Response(text=WS_HOMEPAGE,  content_type='text/html')
 
+async def get_handler(request):
+    return web.Response(text=HOMEPAGE_GET_REQUEST,  content_type='text/html')
 
+async def js_handler(request):
+    return web.Response(text=JS_HOMEPAGE,  content_type='text/html')
 
 async def key_handler(request):
     key = request.match_info.get('key', None)
     logging.info(f"Key: {key}")
-        # return web.Response(text=HOMEPAGE,  content_type='text/html')
-    success, action = gadget_device.press_key(key.upper())
-    message = get_return_message(success, action)
+    message = send_key(key.upper())
     return web.json_response(message)
 
 async def websocket_handler(request):
@@ -47,23 +56,27 @@ async def websocket_handler(request):
                 await ws.close()
             else:
                 logging.info(f"Msg: {msg.data}")
-                success, action = gadget_device.press_key(msg.data.upper())
-                message = get_return_message(success, action)
+                message = send_key(msg.data.upper())
                 await ws.send_json(message)
-
         elif msg.type == aiohttp.WSMsgType.ERROR:
-            print('ws connection closed with exception %s' %
-                  ws.exception())
-
-    print('websocket connection closed')
-
+            logger.error(f'ws connection closed with exception {ws.exception()}')
+    logger.info('websocket connection closed')
     return ws
 
+
+async def get_key_handler(request):
+    key = request.match_info.get('key', None)
+    logging.info(f"Key: {key}")
+    message = send_key(key.upper())
+    raise web.HTTPFound('/get')
 
 app = web.Application()
 app.router.add_get('/', handle)
 app.router.add_get('/ws', websocket_handler)
+app.router.add_get('/js', js_handler)
 app.router.add_get('/rest/{key}', key_handler)
+app.router.add_get('/get', get_handler)
+app.router.add_get('/get/{key}', get_key_handler)
 
 
 def main():
@@ -72,6 +85,3 @@ def main():
     f = loop.create_server(handler, '0.0.0.0', 8080)
     srv = loop.run_until_complete(f)
     loop.run_forever()
-
-    # Start up
-    pass

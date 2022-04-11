@@ -1,5 +1,5 @@
 
-HOMEPAGE = """
+JS_HOMEPAGE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
