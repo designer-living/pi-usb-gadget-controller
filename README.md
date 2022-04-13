@@ -116,7 +116,29 @@ This app provides several ways to receive commands and currently supports the fo
 
 ### Socket interface
 
-A socket interface is provided on port 8888 (by default) it takes the key to press in upper case e.g. UP,DOWN
+A socket interface is provided on port 8888 (by default).
+
+It will accept commands in the format:
+
+```
+<key_state>|<key>\n
+```
+
+Where key_state is one of:
+* `down` - Key has been pressed down
+* `up`  - Key has been released
+* `hold` - Key is being held
+* `press` - Key was pressed and released
+
+`key` is one of the commands listed under Usage above.
+
+e.g. example commands.
+
+```
+down|SELECT\n
+up|SELECT\n
+press|HOME\n
+```
 
 ### Websocket interface
 
