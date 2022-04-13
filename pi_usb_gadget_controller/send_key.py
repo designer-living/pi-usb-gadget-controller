@@ -53,6 +53,7 @@ class SendGadgetDevice():
                     self._key_release(fd)
             return True, action
         except Exception as e:
+            self._logger.error(e)
             return False, str(e)
 
     def key_down(self, key):
@@ -67,6 +68,7 @@ class SendGadgetDevice():
                     self._key_down(action, fd)
             return action
         except Exception as e:
+            self._logger.error(e)
             return False, str(e)
 
     def key_release(self):
@@ -80,6 +82,7 @@ class SendGadgetDevice():
                     self._key_release(fd)
             return True, "Success"
         except Exception as e:
+            self._logger.error(e)
             return False, str(e)
 
     def _key_down(self, key, fd):
