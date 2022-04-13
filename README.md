@@ -158,9 +158,12 @@ sudo pip uninstall pi_usb_gadget_controller
 
 Things i'm working on for this:
 
-* V2 of the API to allow pressing and holding as well as allow keyboard keys to be sent.
-* A seperate app which will take input from a 2.4 GHz USB remote and transmit it to this app
+* ~~V2 of the API to allow pressing and holding~~ (in v 0.3.0)
+* V3 of the API to allow keyboard keys to be sent.
+* V4 of the API to allow mouse events (possibility if I decide I need this)
+* A seperate app which will take input from a 2.4 GHz USB remote and transmit it to this app(in progress)
 * Using a [Pulse Eight USB CEC Adapter](https://www.amazon.co.uk/Pulse-Eight-na-USB-CEC-Adapter/dp/B005JU6LWM/ref=sr_1_1?crid=N8E5OFI7LAC3&amp;keywords=pulse+eight+USB+CEC&amp;qid=1649681621&amp;sprefix=pulse+eight+usb+cec%252Caps%252C57&amp;sr=8-1&_encoding=UTF8&tag=foxy82-21&linkCode=ur2&linkId=9de6a10b778cb0ef9814579952996036&camp=1634&creative=6738) to take CEC commands and send it to this app.
+* Use protobuffers to make it even more responsive (not needed at the moment)
 * Moon shot - can we add a way for a mic to send us audio data so that we could do a voice search? 
 
 ## Useful links
