@@ -347,3 +347,14 @@ keys = {
     "MUTE": keys_consumer_control['KEY_MUTE'],
     "MIC": keys_consumer_control['KEY_VOICECOMMAND'],
 }
+
+# TODO return release as well
+def get_bytes_for_key(key):
+    action = keys_consumer_control.get(key, None)
+    if action is None:
+        action = keys_system_control.get(key, None)
+    if action is None:
+        action = keys_mouse.get(key, None)
+    if action is None:
+        action = keys.get(key, None)    
+    return action

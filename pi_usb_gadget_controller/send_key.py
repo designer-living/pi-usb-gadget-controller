@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import logging
 import sys
-from pi_usb_gadget_controller.keys import keys, CONSUMER_CONTROL_RELEASE
+from pi_usb_gadget_controller.keys import keys, get_bytes_for_key, CONSUMER_CONTROL_RELEASE
 
 
 def print_usage():
@@ -31,7 +31,8 @@ class SendGadgetDevice():
             self._fd = None
 
     def _get_bytes_to_send(self, key):
-        action = keys.get(key, None)
+        action = get_bytes_for_key(key)
+    
         if action is None:
             self._logger.warning(f"Key not found {key}")
         else:
