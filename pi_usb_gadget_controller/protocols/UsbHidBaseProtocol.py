@@ -7,9 +7,9 @@ from pi_usb_gadget_controller.send_key import SendGadgetDevice
 
 class UsbHidBaseProtocol(ABC, asyncio.Protocol):
 
-    def __init__(self, device, logger, delimiter=ord('\n'), heartbeat=''):
+    def __init__(self, device, logger, delimiter='\n', heartbeat=''):
         self._logger = logger
-        self._delimiter = delimiter
+        self._delimiter = ord(delimiter)
         self._heartbeat = heartbeat
 
         self._gadget_device: SendGadgetDevice = device
@@ -24,7 +24,6 @@ class UsbHidBaseProtocol(ABC, asyncio.Protocol):
             self._gadget_device.open()
         except Exception as e:
             self._logger.error(e)
-            exit(-1)
 
 
     def data_received(self, data):

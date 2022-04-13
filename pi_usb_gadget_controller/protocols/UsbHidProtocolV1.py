@@ -3,7 +3,7 @@ from pi_usb_gadget_controller.protocols.UsbHidBaseProtocol import UsbHidBaseProt
 
 class UsbHidProtocolV1(UsbHidBaseProtocol):
 
-    def __init__(self, device, delimiter=ord('\n')):
+    def __init__(self, device, delimiter='\n'):
         super().__init__(device, logging.getLogger(__name__), delimiter)
 
 

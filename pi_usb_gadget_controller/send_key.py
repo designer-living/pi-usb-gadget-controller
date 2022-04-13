@@ -41,32 +41,38 @@ class SendGadgetDevice():
 
     def press_key(self, key):
         try: 
+            self._logger.debug(f"Pressing key {key}")
             action = self._get_bytes_to_send(key)
-            self._logger.debug(f"Pressing key {key} : {action} ")
-            if self._keep_usb_open:
-                self._key_down(action, self._fd)
-                self._key_release(self._fd)
+            if not action is None:
+                if self._keep_usb_open:
+                    self._key_down(action, self._fd)
+                    self._key_release(self._fd)
+                else:
+                    # If we find a long running connection causes an issue we can just open on each key press.
+                    with open(self._device, 'rb+') as fd:
+                        self._key_down(action, fd)
+                        self._key_release(fd)
+                return True, action
             else:
-                # If we find a long running connection causes an issue we can just open on each key press.
-                with open(self._device, 'rb+') as fd:
-                    self._key_down(action, fd)
-                    self._key_release(fd)
-            return True, action
+                return False, f"Key not found {key}"
         except Exception as e:
             self._logger.error(e)
             return False, str(e)
 
     def key_down(self, key):
         try: 
+            self._logger.debug(f"Key Down {key}")
             action = self._get_bytes_to_send(key)
-            self._logger.debug(f"Key Down {key} : {action} ")
-            if self._keep_usb_open:
-                self._key_down(action, self._fd)
+            if not action is None:
+                if self._keep_usb_open:
+                    self._key_down(action, self._fd)
+                else:
+                    # If we find a long running connection causes an issue we can just open on each key press.
+                    with open(self._device, 'rb+') as fd:
+                        self._key_down(action, fd)
+                return action
             else:
-                # If we find a long running connection causes an issue we can just open on each key press.
-                with open(self._device, 'rb+') as fd:
-                    self._key_down(action, fd)
-            return action
+                return False, f"Key not found {key}"
         except Exception as e:
             self._logger.error(e)
             return False, str(e)
