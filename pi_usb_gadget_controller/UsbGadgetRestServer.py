@@ -8,9 +8,9 @@ from pi_usb_gadget_controller.html import JS_HOMEPAGE, HOMEPAGE_GET_REQUEST, WS_
 
 class UsbGadgetRestServer():
 
-    def __init__(self, device='/dev/hidg0'):
+    def __init__(self, device):
         self.logger = logging.getLogger(__name__)
-        self.gadget_device = SendGadgetDevice(device)
+        self.gadget_device = device
         self.app = web.Application()
         self.app.router.add_get('/', self.handle)
         self.app.router.add_get('/ws', self.websocket_handler)
@@ -88,7 +88,8 @@ class UsbGadgetRestServer():
 def main():
     logging.basicConfig(level=logging.DEBUG)
     loop = asyncio.get_event_loop()
-    server = UsbGadgetRestServer()
+    device = SendGadgetDevice('/dev/hidg0')
+    server = UsbGadgetRestServer(device)
 
     handler = server.make_handler()
     f = loop.create_server(handler, '0.0.0.0', 8080)

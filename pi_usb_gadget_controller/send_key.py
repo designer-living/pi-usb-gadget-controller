@@ -37,6 +37,10 @@ class SendGadgetDevice():
             self._fd = open(self._device, 'rb+', buffering=0)
         pass
 
+    def open(self):
+        if self._keep_usb_open and self._fd is None:
+            self._fd = open(self._device, 'rb+', buffering=0)
+
     def close(self):
         if self._fd is not None:
             self._fd.close()

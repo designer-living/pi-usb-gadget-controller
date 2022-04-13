@@ -7,13 +7,11 @@ from pi_usb_gadget_controller.send_key import SendGadgetDevice
 
 class UsbHidProtocol(asyncio.Protocol):
 
-    def __init__(self, keep_usb_open=False, delimiter=ord('\n'), device='/dev/hidg0'):
+    def __init__(self, device, delimiter=ord('\n')):
         self._logger = logging.getLogger(__name__)
         self._delimiter = delimiter
-        self._device = device
-        self._keep_usb_open = keep_usb_open
 
-        self._gadget_device = None
+        self._gadget_device = device
         self._transport = None
         self._received_message = ""
 
@@ -21,7 +19,7 @@ class UsbHidProtocol(asyncio.Protocol):
         peername = transport.get_extra_info('peername')
         self._logger.info('Connection from {}'.format(peername))
         self._transport = transport
-        self._gadget_device = SendGadgetDevice(self._device, self._keep_usb_open)
+        self._gadget_device.open()
 
 
     def data_received(self, data):
@@ -44,9 +42,7 @@ class UsbHidProtocol(asyncio.Protocol):
     def connection_lost(self, exc):
         self._logger.warning('Connection Lost')
         self._transport.close()
-        if self._gadget_device is not None:
-            self._gadget_device.close()
-            self._gadget_device = None
+        self._gadget_device.close()
 
 
 async def start_server():
@@ -54,9 +50,9 @@ async def start_server():
     # low-level APIs.
     logging.info("Starting socket server")
     loop = asyncio.get_running_loop()
-
+    device = SendGadgetDevice('/dev/hidg0')
     server = await loop.create_server(
-        lambda: UsbHidProtocol(),
+        lambda: UsbHidProtocol(device),
         '0.0.0.0', 8888, start_serving=True)
     return server
 
