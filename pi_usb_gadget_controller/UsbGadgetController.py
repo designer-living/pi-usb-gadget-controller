@@ -2,8 +2,8 @@ import argparse
 import asyncio
 import logging
 import os.path
-from pi_usb_gadget_controller.UsbGadgetSocketServer import UsbHidProtocol
 from pi_usb_gadget_controller.UsbGadgetRestServer import UsbGadgetRestServer
+from pi_usb_gadget_controller.protocols.UsbHidProtocolV2 import UsbHidProtocolV2
 
 
 async def async_main(socket_port, web_port, device):
@@ -26,7 +26,7 @@ async def async_main(socket_port, web_port, device):
     if socket_port is not None:
         logging.info(f"Starting socket server on {socket_port}")
         socket_server = await loop.create_server(
-            lambda: UsbHidProtocol(device=device),
+            lambda: UsbHidProtocolV2(device=device),
             '0.0.0.0', socket_port)
 
     if web_port is not None:

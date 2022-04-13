@@ -19,11 +19,8 @@ async def start_server():
     loop = asyncio.get_running_loop()
     device = SendGadgetDevice('/dev/hidg0')
     server = await loop.create_server(
-        lambda: UsbHidProtocolV1(device),
+        lambda: UsbHidProtocolV2(device),
         '0.0.0.0', 8888, start_serving=True)
-    # server = await loop.create_server(
-    #     lambda: UsbHidProtocolV2(device),
-    #     '0.0.0.0', 8888, start_serving=True)
     return server
 
 
