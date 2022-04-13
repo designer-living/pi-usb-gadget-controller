@@ -1,48 +1,15 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
+from os import system
+from pi_usb_gadget_controller.protocols.UsbHidProtocolV1 import UsbHidProtocolV1
+from pi_usb_gadget_controller.protocols.UsbHidProtocolV2 import UsbHidProtocolV2
+
 
 from pi_usb_gadget_controller.send_key import SendGadgetDevice
 
 
-class UsbHidProtocol(asyncio.Protocol):
 
-    def __init__(self, device, delimiter=ord('\n')):
-        self._logger = logging.getLogger(__name__)
-        self._delimiter = delimiter
-
-        self._gadget_device = device
-        self._transport = None
-        self._received_message = ""
-
-    def connection_made(self, transport):
-        peername = transport.get_extra_info('peername')
-        self._logger.info('Connection from {}'.format(peername))
-        self._transport = transport
-        self._gadget_device.open()
-
-
-    def data_received(self, data):
-        message = data.decode()
-        self._logger.debug(f"Packet received: {message}")
-        for letter in message:
-            if ord(letter) != self._delimiter:
-                self._received_message += letter
-            else:
-                self._process_packet(self._received_message)
-                self._received_message = ''
-
-    def _process_packet(self, packet):
-        if packet == '\n':
-            # This is used for heartbeats so do nothing but also no need to log
-            pass
-        else:
-            self._gadget_device.press_key(packet)
-
-    def connection_lost(self, exc):
-        self._logger.warning('Connection Lost')
-        self._transport.close()
-        self._gadget_device.close()
 
 
 async def start_server():
@@ -52,8 +19,11 @@ async def start_server():
     loop = asyncio.get_running_loop()
     device = SendGadgetDevice('/dev/hidg0')
     server = await loop.create_server(
-        lambda: UsbHidProtocol(device),
+        lambda: UsbHidProtocolV1(device),
         '0.0.0.0', 8888, start_serving=True)
+    # server = await loop.create_server(
+    #     lambda: UsbHidProtocolV2(device),
+    #     '0.0.0.0', 8888, start_serving=True)
     return server
 
 
