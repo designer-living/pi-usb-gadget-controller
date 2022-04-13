@@ -21,7 +21,10 @@ with open("README.md", "rb") as f:
  
 setup(
     name = "pi_usb_gadget_controller",
-    packages = ["pi_usb_gadget_controller"],
+    packages = [
+        "pi_usb_gadget_controller",
+        "pi_usb_gadget_controller.protocols"
+    ],
     entry_points = {
             "console_scripts": [
                 'UsbGadgetController = pi_usb_gadget_controller.UsbGadgetController:main',
