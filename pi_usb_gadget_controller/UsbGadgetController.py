@@ -4,6 +4,7 @@ import logging
 import os.path
 from pi_usb_gadget_controller.UsbGadgetRestServer import UsbGadgetRestServer
 from pi_usb_gadget_controller.protocols.UsbHidProtocolV2 import UsbHidProtocolV2
+from pi_usb_gadget_controller.send_key import SendGadgetDevice
 
 
 async def async_main(socket_port, web_port, device):
@@ -26,7 +27,7 @@ async def async_main(socket_port, web_port, device):
     if socket_port is not None:
         logging.info(f"Starting socket server on {socket_port}")
         socket_server = await loop.create_server(
-            lambda: UsbHidProtocolV2(device=device),
+            lambda: UsbHidProtocolV2(device=SendGadgetDevice(device)),
             '0.0.0.0', socket_port)
 
     if web_port is not None:
