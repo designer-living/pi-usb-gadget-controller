@@ -32,7 +32,7 @@ async def async_main(socket_port, web_port, device):
 
     if web_port is not None:
         logging.info(f"Starting web/rest/ws server on {web_port}")
-        app = UsbGadgetRestServer(device=device)
+        app = UsbGadgetRestServer(device=SendGadgetDevice(device))
         handler = app.make_handler()
         rest_server = await loop.create_server(handler, '0.0.0.0', web_port)
 
