@@ -18,20 +18,27 @@ class UsbHidProtocolV2(UsbHidBaseProtocol):
 
     def _process_packet(self, packet: str):
         splitpacket = packet.split(self._message_delimiter)
-        if len(splitpacket) != 2:
+        split_packet_length = len(splitpacket)
+        if split_packet_length > 2:
             self._logger.warning(f"Unexpected message {packet}")
-        else:                
+            return
+        elif split_packet_length == 1:
+            key_code = splitpacket[0]
+            key_state = "press"
+            pass
+        elif split_packet_length == 2:
             key_state = splitpacket[0]
             key_code = splitpacket[1]
-            if key_state == "up":
-                self._gadget_device.key_release()
-            elif key_state == "down":
-                self._gadget_device.key_down(key_code)
-            elif key_state == "hold":
-                # We don't do anything on hold let the 
-                pass
-            elif key_state == "press":
-                self._gadget_device.press_key(key_code)
-            else:
-                self._logger.warning(f"Unexpected key state: {key_state} in packet: {packet}")
 
+        # Send the key state.
+        if key_state == "up":
+            self._gadget_device.key_release()
+        elif key_state == "down":
+            self._gadget_device.key_down(key_code)
+        elif key_state == "hold":
+            # We don't do anything on hold let the device figure it out
+            pass
+        elif key_state == "press":
+            self._gadget_device.press_key(key_code)
+        else:
+            self._logger.warning(f"Unexpected key state: {key_state} in packet: {packet}")
