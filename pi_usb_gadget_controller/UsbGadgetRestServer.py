@@ -2,7 +2,7 @@ import asyncio
 import logging
 import aiohttp
 from aiohttp import web
-from pi_usb_gadget_controller.send_key import SendGadgetDevice
+from pi_usb_gadget_controller.gadget_device import ConsumerControlGadgetDevice
 from pi_usb_gadget_controller.html import JS_HOMEPAGE, HOMEPAGE_GET_REQUEST, WS_HOMEPAGE
 
 
@@ -88,7 +88,7 @@ class UsbGadgetRestServer():
 def main():
     logging.basicConfig(level=logging.DEBUG)
     loop = asyncio.get_event_loop()
-    device = SendGadgetDevice('/dev/hidg0')
+    device = ConsumerControlGadgetDevice('/dev/hidg0')
     server = UsbGadgetRestServer(device)
 
     handler = server.make_handler()

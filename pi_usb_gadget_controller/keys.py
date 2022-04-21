@@ -1,6 +1,19 @@
 NULL_BYTE = 0x0
 NULL_CHAR = bytes((0,))
 CONSUMER_CONTROL_RELEASE = NULL_CHAR*2
+KEYBOARD_RELEASE = NULL_CHAR*8
+
+KEYBOARD_MODIFIER_KEYS = {
+    'KEY_LEFTCTRL':1,
+    'KEY_LEFTSHIFT': 2,
+    'KEY_LEFTALT': 4,
+    'KEY_LEFTMETA': 8,
+    'KEY_RIGHTCTRL':16,
+    'KEY_RIGHTSHIFT' : 32,
+    'KEY_RIGHTALT' : 64,
+    'KEY_RIGHTMETA' : 128,
+}
+
 
 keys_keyboard = {
     "KEY_ESC": bytes((0x29, )),
@@ -31,7 +44,6 @@ keys_keyboard = {
     "KEY_LEFTBRACE": "",
     "KEY_RIGHTBRACE": "",
     "KEY_ENTER": bytes((0x28, )),
-    "KEY_LEFTCTRL": "",
     "KEY_A": bytes((0x04, )),
     "KEY_S": bytes((0x16, )),
     "KEY_D": bytes((0x07, )),
@@ -44,7 +56,6 @@ keys_keyboard = {
     "KEY_SEMICOLON": bytes((0x33, )),
     "KEY_APOSTROPHE": bytes((0x34, )),
     "KEY_GRAVE": bytes((0x35, )),
-    "KEY_LEFTSHIFT": "",
     "KEY_BACKSLASH": bytes((0x31, )),
     "KEY_Z": bytes((0x1D, )),
     "KEY_X": bytes((0x1B, )),
@@ -56,9 +67,7 @@ keys_keyboard = {
     "KEY_COMMA": bytes((0x36, )),
     "KEY_DOT": bytes((0x37, )),
     "KEY_SLASH": bytes((0x38, )),
-    "KEY_RIGHTSHIFT": "",
     "KEY_KPASTERISK": "",
-    "KEY_LEFTALT": "",
     "KEY_SPACE": bytes((0x2C, )),
     "KEY_CAPSLOCK": bytes((0x39, )),
     "KEY_F1": "",
@@ -98,10 +107,8 @@ keys_keyboard = {
     "KEY_MUHENKAN": "",
     "KEY_KPJPCOMMA": "",
     "KEY_KPENTER": "",
-    "KEY_RIGHTCTRL": "",
     "KEY_KPSLASH": "",
     "KEY_SYSRQ": "",
-    "KEY_RIGHTALT": "",
     "KEY_HOME": "",
     "KEY_UP": bytes((0x52, )),
     "KEY_PAGEUP": bytes((0x4B, )),
@@ -122,8 +129,6 @@ keys_keyboard = {
     "KEY_HANGUEL": "",
     "KEY_HANJA": "",
     "KEY_YEN": "",
-    "KEY_LEFTMETA": "",
-    "KEY_RIGHTMETA": "",
     "KEY_COMPOSE": bytes((0x65, )),
     "KEY_STOP": "",
     "KEY_AGAIN": "",

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 from abc import ABC, abstractmethod
 import asyncio
-
-from pi_usb_gadget_controller.send_key import SendGadgetDevice
+from pi_usb_gadget_controller.gadget_device import GadgetDevice
 
 
 class UsbHidBaseProtocol(ABC, asyncio.Protocol):
@@ -12,7 +11,7 @@ class UsbHidBaseProtocol(ABC, asyncio.Protocol):
         self._delimiter = ord(delimiter)
         self._heartbeat = heartbeat
 
-        self._gadget_device: SendGadgetDevice = device
+        self._gadget_device = device
         self._transport = None
         self._received_message = ""
 

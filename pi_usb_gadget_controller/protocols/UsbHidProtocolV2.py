@@ -1,7 +1,6 @@
 import logging
+from pi_usb_gadget_controller.gadget_device import GadgetDevice
 from pi_usb_gadget_controller.protocols.UsbHidBaseProtocol import UsbHidBaseProtocol
-
-from pi_usb_gadget_controller.send_key import SendGadgetDevice
 
 
 class UsbHidProtocolV2(UsbHidBaseProtocol):
@@ -32,7 +31,7 @@ class UsbHidProtocolV2(UsbHidBaseProtocol):
 
         # Send the key state.
         if key_state == "up":
-            self._gadget_device.key_release()
+            self._gadget_device.key_release(key_code)
         elif key_state == "down":
             self._gadget_device.key_down(key_code)
         elif key_state == "hold":
