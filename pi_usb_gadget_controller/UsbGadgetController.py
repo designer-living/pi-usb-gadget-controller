@@ -31,7 +31,7 @@ async def async_main(socket_port, web_port, keyboard_device, consumer_control_de
 
     loop = asyncio.get_running_loop()
 
-    keyboard_device = KeyboardGadgetDevice(consumer_control_device)
+    keyboard_device = KeyboardGadgetDevice(keyboard_device)
     consumer_control_device = ConsumerControlGadgetDevice(consumer_control_device)
     gadget_device = CompositeGadgetDevice(
         keyboard_device, 

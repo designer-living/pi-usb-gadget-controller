@@ -2,7 +2,7 @@
 import logging
 import sys
 from pi_usb_gadget_controller.gadget_device import ConsumerControlGadgetDevice
-from pi_usb_gadget_controller.keys import keys, get_bytes_for_key, CONSUMER_CONTROL_RELEASE
+from pi_usb_gadget_controller.keys import keys
 
 
 def print_usage():
