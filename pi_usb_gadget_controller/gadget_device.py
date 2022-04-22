@@ -25,6 +25,10 @@ class GadgetDevice(ABC):
             self._fd = None
 
     @abstractmethod
+    def can_handle(self, key):
+        pass
+
+    @abstractmethod
     def get_bytes_for_key(self, key):
         pass
 
@@ -106,6 +110,9 @@ class ConsumerControlGadgetDevice(GadgetDevice):
     def __init__(self, device, keep_usb_open=False):
         super().__init__(device, logging.getLogger(__name__), keep_usb_open)
 
+    def can_handle(self, key):
+        return (key in keys.keys_consumer_control) or (key in keys.keys_system_control)
+
     def get_bytes_for_key(self, key):
         press_bytes = keys.keys_system_control.get(key, None)
         if not press_bytes:
@@ -130,6 +137,10 @@ class KeyboardGadgetDevice(GadgetDevice):
         self.KEY_RIGHTSHIFT = False
         self.KEY_RIGHTALT = False
         self.KEY_RIGHTMETA = False
+
+    def can_handle(self, key):
+        return (key in keys.KEYBOARD_MODIFIER_KEYS) or (key in keys.keys_keyboard)
+
 
     def _set_key(self, key, value):
         self._logger.info(f"Set key {key}-{value}")
@@ -164,9 +175,9 @@ class KeyboardGadgetDevice(GadgetDevice):
     def get_bytes_for_key(self, key):
         # TODO handle shift, etc
         modifier_byte = self._handle_modifier_keys(key)
-        self._logger.info("Mod")
         key_press_bytes = keys.keys_keyboard.get(key, None)
         press_bytes = None
+        self._logger.info(f"Modifier {modifier_byte} key_press_bytes {key_press_bytes}")
         if key_press_bytes is not None:
             press_bytes = modifier_byte + keys.NULL_CHAR + key_press_bytes + keys.NULL_CHAR*5
         elif key in keys.KEYBOARD_MODIFIER_KEYS:
@@ -212,6 +223,9 @@ class CompositeGadgetDevice(GadgetDevice):
     def close(self):
         for device in self.devices:
             device.close()
+
+    def can_handle(self, key):
+        pass
 
     def get_bytes_for_key(self, key):
         pass
