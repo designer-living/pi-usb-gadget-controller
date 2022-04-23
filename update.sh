@@ -6,6 +6,7 @@ sudo service usb_gadget_controller stop
 echo "Service stopped"
 echo "Updating software"
 sudo pip install --no-deps --force-reinstall .
+#sudo pip install --force-reinstall .
 echo "Software updated"
 echo "Starting service"
 sudo service usb_gadget_controller start
