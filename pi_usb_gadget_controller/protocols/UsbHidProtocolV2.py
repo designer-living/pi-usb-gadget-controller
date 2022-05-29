@@ -29,15 +29,21 @@ class UsbHidProtocolV2(UsbHidBaseProtocol):
             key_state = splitpacket[0]
             key_code = splitpacket[1]
 
-        # Send the key state.
-        if key_state == "up":
-            self._gadget_device.key_release(key_code)
-        elif key_state == "down":
-            self._gadget_device.key_down(key_code)
-        elif key_state == "hold":
-            # We don't do anything on hold let the device figure it out
-            pass
-        elif key_state == "press":
-            self._gadget_device.press_key(key_code)
-        else:
-            self._logger.warning(f"Unexpected key state: {key_state} in packet: {packet}")
+        # TODO move the up/down/left right into the gadgets.
+        handled = self._gadget_device.handle(key_state, key_code) # KEY STATE is really message type.
+        if not handled:
+            self._logger.warning(f"Unexpected message: {packet}")
+
+
+        # # Send the key state.
+        # if key_state == "up":
+        #     self._gadget_device.key_release(key_code)
+        # elif key_state == "down":
+        #     self._gadget_device.key_down(key_code)
+        # elif key_state == "hold":
+        #     # We don't do anything on hold let the device figure it out
+        #     pass
+        # elif key_state == "press":
+        #     self._gadget_device.press_key(key_code)
+        # else:
+        #     self._logger.warning(f"Unexpected key state: {key_state} in packet: {packet}")
