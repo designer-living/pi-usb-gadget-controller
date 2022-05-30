@@ -16,18 +16,15 @@ class UsbHidProtocolV2(UsbHidBaseProtocol):
 
 
     def _process_packet(self, packet: str):
-        splitpacket = packet.split(self._message_delimiter)
-        split_packet_length = len(splitpacket)
-        if split_packet_length > 2:
-            self._logger.warning(f"Unexpected message {packet}")
-            return
-        elif split_packet_length == 1:
-            key_code = splitpacket[0]
+        split_packet = packet.split(self._message_delimiter, 1)
+        split_packet_length = len(split_packet)
+        if split_packet_length == 1:
+            key_code = split_packet[0]
             key_state = "press"
             pass
-        elif split_packet_length == 2:
-            key_state = splitpacket[0]
-            key_code = splitpacket[1]
+        else:
+            key_state = split_packet[0]
+            key_code = split_packet[1]
 
         # TODO move the up/down/left right into the gadgets.
         handled = self._gadget_device.handle(key_state, key_code) # KEY STATE is really message type.
