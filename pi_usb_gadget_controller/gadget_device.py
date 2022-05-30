@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import logging
 
 from pi_usb_gadget_controller import keys
+from pi_usb_gadget_controller.keys import NULL_CHAR
 
 
 class GadgetDevice(ABC):
@@ -25,78 +26,24 @@ class GadgetDevice(ABC):
             self._fd = None
 
     @abstractmethod
-    def can_handle(self, key):
-        pass
+    def handle(self, message_type, message):
+        """
+        Ask the gadget to handle this message_type/message.
+        returns True if handled or False if this gadget can't
+        handle this message.
+        """
+        return False
 
-    @abstractmethod
-    def get_bytes_for_key(self, key):
-        pass
-
-    def _get_bytes_to_send(self, key):
-        action, release = self.get_bytes_for_key(key)
-    
-        if action is None:
-            self._logger.warning(f"Key not found {key}")
+    def _send_all_bytes(self, list_of_actions):
+        if self._keep_usb_open:
+            for b in list_of_actions:
+                self._send_bytes(b, self._fd)
         else:
-            self._logger.debug(f"Found key {key} : {action} : {release}")
+            with open(self._device, 'rb+') as fd:
+                for b in list_of_actions:
+                    self._send_bytes(b, fd)
 
-        return action, release
-
-    def press_key(self, key):
-        try: 
-            self._logger.debug(f"Pressing key {key}")
-            action, release = self._get_bytes_to_send(key)
-            if not action is None:
-                if self._keep_usb_open:
-                    self._send_key(action, self._fd)
-                    self._send_key(release, self._fd)
-                else:
-                    # If we find a long running connection causes an issue we can just open on each key press.
-                    with open(self._device, 'rb+') as fd:
-                        self._send_key(action, fd)
-                        self._send_key(release, fd)
-                return True, action
-            else:
-                return False, f"Key not found {key}"
-        except Exception as e:
-            self._logger.error(e)
-            return False, str(e)
-
-    def key_down(self, key):
-        try: 
-            self._logger.debug(f"Key Down {key}")
-            action, _ = self._get_bytes_to_send(key)
-            if not action is None:
-                if self._keep_usb_open:
-                    self._send_key(action, self._fd)
-                else:
-                    # If we find a long running connection causes an issue we can just open on each key press.
-                    with open(self._device, 'rb+') as fd:
-                        self._send_key(action, fd)
-                return action
-            else:
-                return False, f"Key not found {key}"
-        except Exception as e:
-            self._logger.error(e)
-            return False, str(e)
-
-    def key_release(self, key):
-        try: 
-            self._logger.debug(f"Releasing {key}")
-            _, release = self._get_bytes_to_send(key)
-            if not release is None:
-                if self._keep_usb_open:
-                    self._send_key(release, self._fd)
-                else:
-                    # If we find a long running connection causes an issue we can just open on each key press.
-                    with open(self._device, 'rb+') as fd:
-                        self._send_key(release, fd)
-                return True, "Success"
-        except Exception as e:
-            self._logger.error(e)
-            return False, str(e)
-
-    def _send_key(self, action, fd):
+    def _send_bytes(self, action, fd):
         if action is None:
             return
         if fd is None:
@@ -105,110 +52,134 @@ class GadgetDevice(ABC):
             self._logger.debug(f"Sending as fd not None {action}")
             fd.write(action)
 
-class ConsumerControlGadgetDevice(GadgetDevice):
+
+class KeyPressingGadgetDevice(GadgetDevice, ABC):
+    """
+    Base class for any Device which is like a key press - e.g. Keyboard / Consumer Control.
+    This will abstract away sending the bytes.
+    """
+    def __init__(self, device, logger, keep_usb_open=False):
+        super().__init__(device, logger, keep_usb_open)
+
+    @abstractmethod
+    def key_we_handle(self, message):
+        return False
+
+    def message_type_we_handle(self, message_type):
+        return message_type == "up" or message_type == "down" or message_type == "hold" or message_type == "press"
+
+    def handle(self, message_type, message):
+        if self.message_type_we_handle(message_type):
+            if self.key_we_handle(message):
+                return self._handle(message_type, message)
+        return False
+
+    def _handle(self, message_type, key):
+        try:
+            self._logger.debug(f"{message_type} on key {key}")
+            bytes_to_send = self.get_bytes_to_send(message_type, key)
+            if len(bytes_to_send) > 0:
+                self._send_all_bytes(bytes_to_send)
+                return True, bytes_to_send
+            else:
+                return False, f"Key not found {key}"
+        except Exception as e:
+            self._logger.error(e)
+            return False, str(e)
+
+    def get_bytes_to_send(self, message_type, key):
+        bytes_to_send = []
+        if message_type == 'down' or message_type == 'press':
+            down_bytes = self.get_key_down_bytes(key)
+            if down_bytes:
+                bytes_to_send.append(down_bytes)
+        if message_type == 'up' or message_type == "press":
+            up_bytes = bytes_to_send.append(self.get_key_up_bytes(key))
+            if up_bytes:
+                bytes_to_send.append(up_bytes)
+        return bytes_to_send
+
+
+    @abstractmethod
+    def get_key_down_bytes(self, key):
+        pass
+
+
+    @abstractmethod
+    def get_key_up_bytes(self, key):
+        pass
+
+
+class ConsumerControlGadgetDevice(KeyPressingGadgetDevice):
 
     def __init__(self, device, keep_usb_open=False):
         super().__init__(device, logging.getLogger(__name__), keep_usb_open)
 
-    def can_handle(self, key):
-        return (key in keys.keys_consumer_control) or (key in keys.keys_system_control)
+    def key_we_handle(self, message):
+        return (message in keys.keys_consumer_control) or (message in keys.keys_system_control)
 
-    def get_bytes_for_key(self, key):
+    def get_key_down_bytes(self, key):
         press_bytes = keys.keys_system_control.get(key, None)
         if not press_bytes:
             press_bytes = keys.keys_consumer_control.get(key, None)
 
         if not press_bytes:
             press_bytes = keys.keys.get(key, None)
+        return press_bytes
 
-        return press_bytes, keys.CONSUMER_CONTROL_RELEASE
+    def get_key_up_bytes(self, key):
+        return keys.CONSUMER_CONTROL_RELEASE
 
 
-class KeyboardGadgetDevice(GadgetDevice):
-    # TODO rewrite this to remember state.
+class KeyboardGadgetDevice(KeyPressingGadgetDevice):
 
     def __init__(self, device, keep_usb_open=False):
         super().__init__(device, logging.getLogger(__name__), keep_usb_open)
-        self.KEY_LEFTCTRL = False
-        self.KEY_LEFTSHIFT = False
-        self.KEY_LEFTALT = False
-        self.KEY_LEFTMETA = False
-        self.KEY_RIGHTCTRL = False
-        self.KEY_RIGHTSHIFT = False
-        self.KEY_RIGHTALT = False
-        self.KEY_RIGHTMETA = False
+        self.modifier_keys_down = {}
+        self.keys_down = []
 
-    def can_handle(self, key):
+    def key_we_handle(self, key):
         return (key in keys.KEYBOARD_MODIFIER_KEYS) or (key in keys.keys_keyboard)
 
+    def get_key_down_bytes(self, key):
+        if key in keys.KEYBOARD_MODIFIER_KEYS:
+            self.modifier_keys_down[key] = True
+        else:
+            self.keys_down.append(key)
+        return self._get_bytes_for_message()
 
-    def _set_key(self, key, value):
-        self._logger.info(f"Set key {key}-{value}")
-        if key == 'KEY_LEFTCTRL':
-            self.KEY_LEFTCTRL = value
-        if key == 'KEY_LEFTSHIFT':
-            self.KEY_LEFTSHIFT = value
-        if key == 'KEY_LEFTALT':
-            self.KEY_LEFTALT = value
-        if key == 'KEY_LEFTMETA':
-            self.KEY_LEFTMETA = value
-        if key == 'KEY_RIGHTCTRL':
-            self.KEY_RIGHTCTRL = value
-        if key == 'KEY_RIGHTSHIFT':
-            self.KEY_RIGHTSHIFT = value
-        if key == 'KEY_RIGHTALT':
-            self.KEY_RIGHTALT = value
-        if key == 'KEY_RIGHTMETA':
-            self.KEY_RIGHTMETA = value
+    def get_key_up_bytes(self, key):
+        if key in keys.KEYBOARD_MODIFIER_KEYS:
+            self.modifier_keys_down.pop(key, None)
+        else:
+            if key in self.keys_down:
+                self.keys_down.remove(key)
+        return self._get_bytes_for_message()
 
-    def key_down(self, key):
-        self._logger.info("Key Down")
-        self._set_key(key, True)
-        return super().key_down(key)
+    def _get_bytes_for_message(self):
+        modifier_byte = self._get_modifier_keys_bytes()
+        key_press_bytes = self._get_key_press_bytes()
+        return modifier_byte + NULL_CHAR + key_press_bytes
 
-    def key_release(self, key):
-        self._logger.info("Key Release")
-        self._set_key(key, False)
-        return super().key_release(key)
-
-
-    def get_bytes_for_key(self, key):
-        # TODO handle shift, etc
-        modifier_byte = self._handle_modifier_keys(key)
-        key_press_bytes = keys.keys_keyboard.get(key, None)
-        press_bytes = None
-        self._logger.info(f"Modifier {modifier_byte} key_press_bytes {key_press_bytes}")
-        if key_press_bytes is not None:
-            press_bytes = modifier_byte + keys.NULL_CHAR + key_press_bytes + keys.NULL_CHAR*5
-        elif key in keys.KEYBOARD_MODIFIER_KEYS:
-            press_bytes = modifier_byte + keys.NULL_CHAR + keys.NULL_CHAR + keys.NULL_CHAR*5
-
-        return press_bytes, keys.KEYBOARD_RELEASE
-
-    def _handle_modifier_keys(self, key):
-
+    def _get_modifier_keys_bytes(self):
         total = 0
-        if self.KEY_LEFTCTRL:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_LEFTCTRL')
-        if self.KEY_LEFTSHIFT:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_LEFTSHIFT')
-        if self.KEY_LEFTALT:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_LEFTALT')
-        if self.KEY_LEFTMETA:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_LEFTMETA')
-        if self.KEY_RIGHTCTRL:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_RIGHTCTRL')
-        if self.KEY_RIGHTSHIFT:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_RIGHTSHIFT')
-        if self.KEY_RIGHTALT:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_RIGHTALT')
-        if self.KEY_RIGHTMETA:
-            total = total + keys.KEYBOARD_MODIFIER_KEYS.get('KEY_RIGHTMETA')
+        for key in self.modifier_keys_down:
+            total = total + keys.KEYBOARD_MODIFIER_KEYS.get(key, 0)
         self._logger.info(f"Total: {total}")
         return bytes([total])
 
-        
+    def _get_key_press_bytes(self):
+        key_bytes = bytes([])
+        if len(self.keys_down) > 6:
+            self._logger.warning(f"More than 6 keys pressed only taking the top 6. {self.keys_down}")
+        for x in range(6):
+            if len(self.keys_down) > x:
+                key_bytes = key_bytes + (keys.keys_keyboard.get(self.keys_down[x], NULL_CHAR))
+            else:
+                key_bytes = key_bytes + (NULL_CHAR)
+        return key_bytes
 
+        
 class CompositeGadgetDevice(GadgetDevice):
 
     def __init__(self, *devices):
@@ -219,50 +190,15 @@ class CompositeGadgetDevice(GadgetDevice):
         for device in self.devices:
             device.open()
 
-        
     def close(self):
         for device in self.devices:
             device.close()
 
-    def can_handle(self, key):
-        pass
-
-    def get_bytes_for_key(self, key):
-        pass
-
-    def can_handle_key(self, device, key):
-        self._logger.info(f"Can handle? {key} - {device}")
-        action, _ = device.get_bytes_for_key(key)
-        if action is not None:
-            self._logger.info(f"YES Can handle? {key} - {device}")
-            return True
+    def handle(self, message_type, message):
+        for device in self.devices:
+            if device.handle(message_type, message):
+                return True
         return False
 
-
-    def press_key(self, key):
-        try: 
-            for device in self.devices:
-                if self.can_handle_key(device, key):
-                    return device.press_key(key)
-        except Exception as e:
-            self._logger.error(e)
-            return False, str(e)
-
-    def key_down(self, key):
-        try: 
-            for device in self.devices:
-                if self.can_handle_key(device, key):
-                    self._logger.info("KEYYING DOWN")
-                    return device.key_down(key)
-        except Exception as e:
-            self._logger.error(e)
-            return False, str(e)
-
-    def key_release(self, key):
-        try: 
-            for device in self.devices:
-                if self.can_handle_key(device, key):
-                    return device.key_release(key)
-        except Exception as e:
-            self._logger.error(e)
-            return False, str(e)
+    def _send_bytes(self, action, fd):
+        raise Exception("Can't send bytes to a composite device")

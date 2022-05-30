@@ -15,38 +15,16 @@ def get_mock_open(files: dict[str, str]):
 
 class TestCompositeGadgetDevice(unittest.TestCase):
 
-    def test_remote_handles_key(self):
+    def test_composite_device_one_device(self):
         device_name = "/dev/hidg1"
         open_mock_remote = mock_open()
         with patch("builtins.open", open_mock_remote) as mock_file:
-        # with patch("builtins.open", open_mock_remote) as mock_file:
             remote_gadget = ConsumerControlGadgetDevice(device_name)
-            remote_gadget.key_down("KEY_ENTER")
-        open_mock_remote.mock_calls
+            composite_device = CompositeGadgetDevice(remote_gadget)
+            remote_gadget.handle("down", "KEY_ENTER")
         open_mock_remote.assert_called_once_with(device_name, 'rb+')
         handle = open_mock_remote()
         handle.write.assert_called_once_with(bytes((0x41, 0x0)))
-
-    def test_keyboard_handles_key(self):
-        device_name = "/dev/hidg0"
-        open_mock_remote = mock_open()
-        with patch("builtins.open", open_mock_remote) as mock_file:
-            remote_gadget = KeyboardGadgetDevice(device_name)
-            remote_gadget.key_down("KEY_A")
-        open_mock_remote.assert_called_once_with(device_name, 'rb+')
-        handle = open_mock_remote()
-        handle.write.assert_called_once_with(bytes((0x0, 0x0, 0x04, 0x0, 0x0, 0x0, 0x0, 0x0)))
-
-    def test_composite_device_one_device(self):
-        device_name = "/dev/hidg0"
-        open_mock_remote = mock_open()
-        with patch("builtins.open", open_mock_remote) as mock_file:
-            remote_gadget = KeyboardGadgetDevice(device_name)
-            composite_device = CompositeGadgetDevice(remote_gadget)
-            composite_device.key_down("KEY_A")
-        open_mock_remote.assert_called_once_with(device_name, 'rb+')
-        handle = open_mock_remote()
-        handle.write.assert_called_once_with(bytes((0x0, 0x0, 0x04, 0x0, 0x0, 0x0, 0x0, 0x0)))
 
     def test_composite_device(self):
         device_name_kb = "/dev/hidg0"
@@ -61,8 +39,8 @@ class TestCompositeGadgetDevice(unittest.TestCase):
             remote_gadget = ConsumerControlGadgetDevice(device_name_remote)
             kb_gadget = KeyboardGadgetDevice(device_name_kb)
             composite_gadget = CompositeGadgetDevice(remote_gadget, kb_gadget)
-            composite_gadget.key_down("KEY_A")
-            composite_gadget.key_down("KEY_ENTER")
+            composite_gadget.handle("down", "KEY_A")
+            composite_gadget.handle("down", "KEY_ENTER")
 
         handle_remote = open_mock_remote()
         handle_remote.write.assert_called_once_with(bytes((0x41, 0x0)))

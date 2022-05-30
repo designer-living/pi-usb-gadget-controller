@@ -45,7 +45,7 @@ class UsbHidBaseProtocol(ABC, asyncio.Protocol):
             self._process_packet(packet)
 
     @abstractmethod
-    def _process_packet(self):
+    def _process_packet(self, packet):
         pass
 
     def connection_lost(self, exc):
