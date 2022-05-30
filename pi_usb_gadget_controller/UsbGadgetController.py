@@ -3,11 +3,11 @@ import asyncio
 import logging
 import os.path
 from pi_usb_gadget_controller.UsbGadgetRestServer import UsbGadgetRestServer
-from pi_usb_gadget_controller.gadget_device import CompositeGadgetDevice, ConsumerControlGadgetDevice, KeyboardGadgetDevice
+from pi_usb_gadget_controller.gadget_device import CompositeGadgetDevice, ConsumerControlGadgetDevice, KeyboardGadgetDevice, MouseGadgetDevice
 from pi_usb_gadget_controller.protocols.UsbHidProtocolV2 import UsbHidProtocolV2
 
 
-async def async_main(socket_port, web_port, keyboard_device, consumer_control_device):
+async def async_main(socket_port, web_port, keyboard_device, consumer_control_device, mouse_device):
     # Get a reference to the event loop as we plan to use
     # low-level APIs.
 
@@ -25,6 +25,14 @@ async def async_main(socket_port, web_port, keyboard_device, consumer_control_de
     else:
         logging.info(f"Confirmed {consumer_control_device} exists")
 
+    logging.info(f"Using mouse device: {mouse_device}")
+    if not os.path.exists(mouse_device):
+        logging.error(f"{mouse_device} doesn't exist or you don't have permissions to access it")
+        exit(-1)
+    else:
+        logging.info(f"Confirmed {mouse_device} exists")
+
+
     if socket_port is None and web_port is None:
         socket_port = 8888
         web_port = 8080
@@ -33,9 +41,11 @@ async def async_main(socket_port, web_port, keyboard_device, consumer_control_de
 
     keyboard_device = KeyboardGadgetDevice(keyboard_device)
     consumer_control_device = ConsumerControlGadgetDevice(consumer_control_device)
+    mouse_device = MouseGadgetDevice(mouse_device)
     gadget_device = CompositeGadgetDevice(
         consumer_control_device,
-        keyboard_device, 
+        keyboard_device,
+        mouse_device,
     )
 
     if socket_port is not None:
@@ -57,6 +67,7 @@ def main():
     parser = argparse.ArgumentParser(description="Send commands to a USB Gadget")
     parser.add_argument("--keyboard_device", action="store", help="The USB Gadget keyboard device. DEFAULTS to /dev/hidg0", default='/dev/hidg0')
     parser.add_argument("--consumer_control_device", action="store", help="The USB Gadget Consumer Control device. DEFAULTS to /dev/hidg1", default='/dev/hidg1')
+    parser.add_argument("--mouse_device", action="store", help="The USB Gadget Mouse device. DEFAULTS to /dev/hidg2", default='/dev/hidg2')
     parser.add_argument("--web_port", type=int, action="store", help="The port to start the web_port on. DEFAULTS to 8080. NOTE if you specify a port here you also need to spcify a --socket_port otherwise the socket port won't be opened")
     parser.add_argument("--socket_port", type=int, action="store", help="The port to start the socket server on. DEFAULTS to 8888. NOTE if you specify a port here you also need to spcify a --web_port otherwise the web  port won't be opened")
     parser.add_argument("--logging", action="store", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='INFO', help="The logging level to use. DEFAULTS to INFO")
@@ -69,4 +80,5 @@ def main():
         config['web_port'],
         config['keyboard_device'],
         config['consumer_control_device'],
+        config['mouse_device'],
     ))

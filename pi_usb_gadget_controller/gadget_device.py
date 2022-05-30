@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import logging
+import struct
 
 from pi_usb_gadget_controller import keys
 from pi_usb_gadget_controller.keys import NULL_CHAR
@@ -179,7 +180,64 @@ class KeyboardGadgetDevice(KeyPressingGadgetDevice):
                 key_bytes = key_bytes + (NULL_CHAR)
         return key_bytes
 
-        
+
+class MouseGadgetDevice(GadgetDevice):
+
+    DELIMITER = '|'
+    ENDIAN = 'little'
+
+    def __init__(self, device, report_descriptor = None, keep_usb_open=False):
+        super().__init__(device, logging.getLogger(__name__), keep_usb_open)
+        self.report_descriptor = report_descriptor
+        self.rel_report_id = bytes([0x1])
+        self.abs_report_id = bytes([0x2])
+
+    def handle(self, message_type, message):
+        if message_type == "abs":
+            return self._handle_abs(message)
+        elif message_type == "rel":
+            return self._handle_rel(message)
+        return False
+
+    def _handle_abs(self, message):
+        # TODO implement this
+        split_message = message.split(self.DELIMITER)
+        if len(split_message) != 2:
+            self._logger.warning(f"Unexpected message: {message}")
+        else:
+            button_press_bytes = self._get_button_press_bytes(message)
+            x_bytes = self.abs_bytes(split_message[0])
+            y_bytes = self.abs_bytes(split_message[1])
+            complete_report = self.abs_report_id + button_press_bytes + x_bytes + y_bytes + NULL_CHAR*2
+            self._send_all_bytes([complete_report])
+            return True
+        return False
+
+    def _handle_rel(self, message):
+        # TODO implement this
+        split_message = message.split(self.DELIMITER)
+        if len(split_message) != 2:
+            self._logger.warning(f"Unexpected message: {message}")
+        else:
+            button_press_bytes = self._get_button_press_bytes(message)
+            x_bytes = self.rel_bytes(split_message[0])
+            y_bytes = self.rel_bytes(split_message[1])
+            complete_report = self.rel_report_id + button_press_bytes + x_bytes + y_bytes + NULL_CHAR*2
+            self._send_all_bytes([complete_report])
+            return True
+        return False
+
+    def _get_button_press_bytes(self, message):
+        # TODO implement buttons
+        return NULL_CHAR
+
+    def abs_bytes(self, value):
+        return struct.pack(">B", int(value))
+
+    def rel_bytes(self, value):
+        return struct.pack(">b", int(value))
+
+
 class CompositeGadgetDevice(GadgetDevice):
 
     def __init__(self, *devices):
