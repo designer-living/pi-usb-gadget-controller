@@ -26,7 +26,7 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10">
-                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('UP')">&uarr;</button>
+                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_UP')">&uarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -37,9 +37,9 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('LEFT')">&larr;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('SELECT')"><small>ok</small></button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('RIGHT')">&rarr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_LEFT')">&larr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_ENTER')"><small>ok</small></button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_RIGHT')">&rarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -50,7 +50,7 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('DOWN')">&darr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_DOWN')">&darr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -61,10 +61,10 @@ JS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('HOME')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('PLAY')">&#9658;&par;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('BACK')">&nbsp;&crarr;&nbsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&#128264;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_HOMEPAGE')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_PLAYPAUSE')">&#9658;&par;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_BACK')">&nbsp;&crarr;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_MENU')">&nbsp;&#128264;&nbsp;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -145,7 +145,7 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10">
-                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('UP')">&uarr;</button>
+                    <button class="btn btn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_UP')">&uarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -156,9 +156,9 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('LEFT')">&larr;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('SELECT')"><small>ok</small></button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('RIGHT')">&rarr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_LEFT')">&larr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_ENTER')"><small>ok</small></button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_RIGHT')">&rarr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -169,7 +169,7 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('DOWN')">&darr;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_DOWN')">&darr;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -180,10 +180,10 @@ WS_HOMEPAGE = """
                     &emsp;
                 </div>
                 <div class="col">
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('HOME')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('PLAY')">&#9658;&par;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('BACK')">&nbsp;&crarr;&nbsp;</button>
-                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('MUTE')">&nbsp;&#128264;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_HOMEPAGE')">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_PLAYPAUSE')">&#9658;&par;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_BACK')">&nbsp;&crarr;&nbsp;</button>
+                    <button class="btn brn-dark btn-lg text-light btn-outline-primary" onclick="send_button('KEY_MENU')">&nbsp;&#128264;&nbsp;</button>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -247,9 +247,9 @@ HOMEPAGE_GET_REQUEST = """
                     &emsp;
                 </div>
                 <div class="col-10 mt-1 mb-1">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/LEFT" role="button">&larr;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/SELECT" role="button"><small>ok</small></a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/RIGHT" role="button">&rarr;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_LEFT" role="button">&larr;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_ENTER" role="button"><small>ok</small></a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_RIGHT" role="button">&rarr;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -260,7 +260,7 @@ HOMEPAGE_GET_REQUEST = """
                     &emsp;
                 </div>
                 <div class="col-10 mb-5">
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/DOWN" role="button">&darr;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_DOWN" role="button">&darr;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
@@ -272,10 +272,10 @@ HOMEPAGE_GET_REQUEST = """
                 </div>
                 <div class="col">
 
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/HOME" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/PLAY" role="button">&#9658;&par;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/BACK" role="button">&nbsp;&crarr;&nbsp;</a>
-                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/MUTE" role="button">&nbsp;&#128264;&nbsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_HOMEPAGE" role="button">&thinsp;&nbsp;&#8962;&nbsp;&thinsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_PLAYPAUSE" role="button">&#9658;&par;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_BACK" role="button">&nbsp;&crarr;&nbsp;</a>
+                    <a class="btn brn-dark btn-lg text-light btn-outline-primary" href="/get/KEY_MENU" role="button">&nbsp;&#128264;&nbsp;</a>
                 </div>
                 <div class="col-1">
                     &emsp;
