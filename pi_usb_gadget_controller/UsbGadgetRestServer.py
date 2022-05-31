@@ -39,7 +39,7 @@ class UsbGadgetRestServer():
 
 
     def send_key(self, key):
-        success, action = self.gadget_device.press_key(key)
+        success, action = self.gadget_device.handle('press', f'KEY_{key}')
         message = self.get_return_message(success, action)
         return message
 
