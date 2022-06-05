@@ -187,7 +187,7 @@ keys_consumer_control = {
     "KEY_MUTE": bytes((0xE2, NULL_BYTE)), # bytes((226,))+NULL_CHAR
     "KEY_VOLUMEDOWN": bytes((0xEA, NULL_BYTE)),
     "KEY_VOLUMEUP": bytes((0xE9, NULL_BYTE)),
-    "KEY_POWER": "",
+    "KEY_POWER": bytes((0x30, NULL_BYTE)),
     "KEY_PAUSE": "",
     "KEY_SCALE": "",
     "KEY_STOP": "",
@@ -198,7 +198,7 @@ keys_consumer_control = {
     "KEY_PASTE": "",
     "KEY_FIND": "",
     "KEY_CUT": "",
-    "KEY_HELP": "",
+    "KEY_HELP": bytes((0x95, NULL_BYTE)),
     "KEY_MENU": bytes((0x40, NULL_BYTE)),
     "KEY_CALC": "",
     "KEY_SLEEP": bytes((0x34, NULL_BYTE)),
@@ -214,7 +214,7 @@ keys_consumer_control = {
     "KEY_PLAYPAUSE": bytes((0xCD, NULL_BYTE)), # bytes((205,))+NULL_CHAR,
     "KEY_PREVIOUSSONG": bytes((0xB6, NULL_BYTE)),
     "KEY_STOPCD": "",
-    "KEY_RECORD": "",
+    "KEY_RECORD": bytes((0xB2, NULL_BYTE)),
     "KEY_REWIND": bytes((0xB4, NULL_BYTE)),
     "KEY_PHONE": "",
     "KEY_CONFIG": bytes((0x83, 0x01)),
@@ -254,7 +254,7 @@ keys_consumer_control = {
     "KEY_GOTO": "",
     "KEY_INFO": "",
     "KEY_PROGRAM": "",
-    "KEY_PVR": "",
+    "KEY_PVR": bytes((0x9A, NULL_BYTE)),
     "KEY_SUBTITLE": "",
     "KEY_ZOOM": "",
     "KEY_KEYBOARD": "",
@@ -278,8 +278,8 @@ keys_consumer_control = {
     "KEY_GREEN": "",
     "KEY_YELLOW": "",
     "KEY_BLUE": "",
-    "KEY_CHANNELUP": "",
-    "KEY_CHANNELDOWN": "",
+    "KEY_CHANNELUP": bytes((0x9C, NULL_BYTE)),
+    "KEY_CHANNELDOWN": bytes((0x9D, NULL_BYTE)),
     "KEY_LAST": "",
     "KEY_NEXT": "",
     "KEY_RESTART": "",
@@ -325,6 +325,101 @@ keys_consumer_control = {
     "KEY_KBDINPUTASSIST_ACCEPT": "",
     "KEY_KBDINPUTASSIST_CANCEL": "",
 }
+
+def is_consumer_control_scancode(scancode):
+    return scancode.startswith('c')
+
+def is_keyboard_scancode(scancode):
+    return scancode.startswith('7')
+
+
+def scan_code_to_bytes(scancode):
+    # c01f4
+    # Remove the page info at the front.
+    # 01f4
+    code = scancode[1:]
+    # Split into pairs:
+    # 01 f4
+    # Reverse them:
+    # f4 01
+    # Into Bytes:
+    # bytes((0xF4, 0x01))
+    return code
+
+'''
+Record/List top left
+Event: time 1654408498.010322, type 4 (EV_MSC), code 4 (MSC_SCAN), value c01f4
+Event: time 1654408498.010322, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 0
+Event: time 1654408498.010322, -------------- SYN_REPORT ------------
+
+Apps
+Event: time 1654408539.689560, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02ff
+Event: time 1654408539.689560, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408539.689560, -------------- SYN_REPORT ------------
+
+Prime Video
+Event: time 1654408556.218658, type 4 (EV_MSC), code 4 (MSC_SCAN), value c01fc
+Event: time 1654408556.218658, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408556.218658, -------------- SYN_REPORT ------------
+
+Kids
+Event: time 1654408573.859846, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02fd
+Event: time 1654408573.859846, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408573.859846, -------------- SYN_REPORT ------------
+
+Live TV/Exit
+Event: time 1654408589.701873, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02fe
+Event: time 1654408589.701873, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408589.701873, -------------- SYN_REPORT ------------
+
+Top Picks
+Event: time 1654408610.316754, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02fc
+Event: time 1654408610.316754, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408610.316754, -------------- SYN_REPORT ------------
+
+Magnifying Glass
+Event: time 1654408631.256593, type 4 (EV_MSC), code 4 (MSC_SCAN), value c01c6
+Event: time 1654408631.256593, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408631.256593, -------------- SYN_REPORT ------------
+
+Guide
+Event: time 1654408647.310463, type 4 (EV_MSC), code 4 (MSC_SCAN), value c01f3
+Event: time 1654408647.310463, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408647.310463, -------------- SYN_REPORT ------------
+
+Info:
+Event: time 1654408682.630193, type 4 (EV_MSC), code 4 (MSC_SCAN), value c01c2
+Event: time 1654408682.630193, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408682.630193, -------------- SYN_REPORT ------------
+
+Red:
+Event: time 1654408699.009541, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02f3
+Event: time 1654408699.009541, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408699.009541, -------------- SYN_REPORT ------------
+
+Green:
+Event: time 1654408708.304831, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02f4
+Event: time 1654408708.304831, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408708.304831, -------------- SYN_REPORT ------------
+
+Yellow
+Event: time 1654408720.098940, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02f5
+Event: time 1654408720.098940, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408720.098940, -------------- SYN_REPORT ------------
+
+Blue:
+Event: time 1654408736.877999, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02f2
+Event: time 1654408736.877999, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408736.877999, -------------- SYN_REPORT ------------
+
+S/AD:
+Event: time 1654408751.220642, type 4 (EV_MSC), code 4 (MSC_SCAN), value c02f8
+Event: time 1654408751.220642, type 1 (EV_KEY), code 240 (KEY_UNKNOWN), value 1
+Event: time 1654408751.220642, -------------- SYN_REPORT ------------
+
+
+
+'''
 
 keys_system_control = {
     "KEY_POWER": bytes((0x81, NULL_BYTE)),
