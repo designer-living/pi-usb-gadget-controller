@@ -45,10 +45,10 @@ class TestCompositeGadgetDevice(unittest.TestCase):
         open_mock_remote = mock_open()
         with patch("builtins.open", open_mock_remote) as mock_file:
             remote_gadget = ConsumerControlGadgetDevice(device_name)
-            remote_gadget.handle("down", "KEY_UNKNOWN|c02f8")
+            remote_gadget.handle("down", "KEY_RAW|c02f8")
         open_mock_remote.assert_called_once_with(device_name, 'rb+')
         handle = open_mock_remote()
-        handle.write.assert_called_once_with(bytes((0x41, 0x0)))        
+        handle.write.assert_called_once_with(bytes((0xF8, 0x02)))
 
 if __name__ == '__main__':
     unittest.main()

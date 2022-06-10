@@ -5,6 +5,7 @@ import struct
 from pi_usb_gadget_controller import keys
 from pi_usb_gadget_controller.keys import NULL_CHAR
 
+DELIMITER = '|'
 
 class GadgetDevice(ABC):
 
@@ -117,16 +118,34 @@ class ConsumerControlGadgetDevice(KeyPressingGadgetDevice):
         super().__init__(device, logging.getLogger(__name__), keep_usb_open)
 
     def key_we_handle(self, message):
-        return (message in keys.keys_consumer_control) or (message in keys.keys_system_control)
+        return (message in keys.keys_consumer_control) or \
+               (message in keys.keys_system_control) or \
+               (message.startswith('KEY_RAW|c')) # 0x0C is the Consumer Control page in the HID spec
 
     def get_key_down_bytes(self, key):
-        press_bytes = keys.keys_system_control.get(key, None)
-        if not press_bytes:
-            press_bytes = keys.keys_consumer_control.get(key, None)
+        if key.startswith("KEY_RAW"):
+            split_key = key.split(DELIMITER, 2)
+            # We only need the second bit.
+            split_key = split_key[1]
+            # Drop the first letter as that isn't sent to the connected device.
+            split_key = split_key[1:]
+            # Split string into string of bytes
+            chunks = [split_key[i:i + 2] for i in range(0, len(split_key), 2)]
+            # Reverse the list as we write the message the reverse of what we send.
+            chunks.reverse()
+            b = bytes()
+            for chunk in chunks:
+                # Convert each String hex into a byte
+                b = b + bytearray.fromhex(chunk)
+            return b
+        else:
+            press_bytes = keys.keys_system_control.get(key, None)
+            if not press_bytes:
+                press_bytes = keys.keys_consumer_control.get(key, None)
 
-        if not press_bytes:
-            press_bytes = keys.keys.get(key, None)
-        return press_bytes
+            if not press_bytes:
+                press_bytes = keys.keys.get(key, None)
+            return press_bytes
 
     def get_key_up_bytes(self, key):
         return keys.CONSUMER_CONTROL_RELEASE
