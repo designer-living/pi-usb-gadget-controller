@@ -326,8 +326,15 @@ keys_consumer_control = {
     "KEY_KBDINPUTASSIST_CANCEL": "",
 }
 
+MOUSE_BUTTONS = {
+    'BTN_LEFT': 1,
+    'BTN_RIGHT': 2,
+}
+
+
 def is_consumer_control_scancode(scancode):
     return scancode.startswith('c')
+
 
 def is_keyboard_scancode(scancode):
     return scancode.startswith('7')

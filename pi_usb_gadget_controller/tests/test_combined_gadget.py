@@ -1,4 +1,4 @@
-from pi_usb_gadget_controller.gadget_device import CompositeGadgetDevice, ConsumerControlGadgetDevice, KeyboardGadgetDevice
+from pi_usb_gadget_controller.gadget_device import CompositeGadgetDevice, ConsumerControlGadgetDevice, KeyboardGadgetDevice, MouseGadgetDevice
 import unittest
 from unittest.mock import patch, mock_open, MagicMock
 
@@ -29,23 +29,32 @@ class TestCompositeGadgetDevice(unittest.TestCase):
     def test_composite_device(self):
         device_name_kb = "/dev/hidg0"
         device_name_remote = "/dev/hidg1"
+        device_name_mouse = "/dev/hidg2"
         open_mock_remote = mock_open()
         open_mock_kb = mock_open()
+        open_mock_mouse = mock_open()
 
-        files = {device_name_kb: open_mock_kb,
-                 device_name_remote: open_mock_remote}
+        files = {
+            device_name_kb: open_mock_kb,
+            device_name_remote: open_mock_remote,
+            device_name_mouse: open_mock_mouse,
+         }
 
         with patch("builtins.open", get_mock_open(files)) as mock_file:
             remote_gadget = ConsumerControlGadgetDevice(device_name_remote)
             kb_gadget = KeyboardGadgetDevice(device_name_kb)
-            composite_gadget = CompositeGadgetDevice(remote_gadget, kb_gadget)
+            mouse_gadget = MouseGadgetDevice(device_name_mouse)
+            composite_gadget = CompositeGadgetDevice(remote_gadget, kb_gadget, mouse_gadget)
             composite_gadget.handle("down", "KEY_A")
             composite_gadget.handle("down", "KEY_ENTER")
+            composite_gadget.handle("down", "BTN_LEFT")
 
         handle_remote = open_mock_remote()
         handle_remote.write.assert_called_once_with(bytes((0x41, 0x0)))
         handle_kb = open_mock_kb()
         handle_kb.write.assert_called_once_with(bytes((0x0, 0x0, 0x04, 0x0, 0x0, 0x0, 0x0, 0x0)))
+        handle_mouse = open_mock_mouse()
+        handle_mouse.write.assert_called_once_with(bytes((0x01, 0x01, 0x00, 0x00, 0x0, 0x0)))
 
 
 if __name__ == '__main__':

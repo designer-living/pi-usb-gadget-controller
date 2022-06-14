@@ -200,7 +200,7 @@ class KeyboardGadgetDevice(KeyPressingGadgetDevice):
         return key_bytes
 
 
-class MouseGadgetDevice(GadgetDevice):
+class MouseGadgetDevice(KeyPressingGadgetDevice):
 
     DELIMITER = '|'
     ENDIAN = 'little'
@@ -210,13 +210,20 @@ class MouseGadgetDevice(GadgetDevice):
         self.report_descriptor = report_descriptor
         self.rel_report_id = bytes([0x1])
         self.abs_report_id = bytes([0x2])
+        self.buttons_down = []
 
     def handle(self, message_type, message):
-        if message_type == "abs":
+        handled = super().handle(message_type, message)
+        if handled:
+            return handled
+        elif message_type == "abs":
             return self._handle_abs(message)
         elif message_type == "rel":
             return self._handle_rel(message)
         return False
+
+    def key_we_handle(self, key):
+        return key in keys.MOUSE_BUTTONS
 
     def _handle_abs(self, message):
         # TODO implement this
@@ -224,31 +231,46 @@ class MouseGadgetDevice(GadgetDevice):
         if len(split_message) != 2:
             self._logger.warning(f"Unexpected message: {message}")
         else:
-            button_press_bytes = self._get_button_press_bytes(message)
             x_bytes = self.abs_bytes(split_message[0])
             y_bytes = self.abs_bytes(split_message[1])
-            complete_report = self.abs_report_id + button_press_bytes + x_bytes + y_bytes + NULL_CHAR*2
+            complete_report = self._get_bytes_for_message(self.abs_report_id, x_bytes, y_bytes)
             self._send_all_bytes([complete_report])
             return True
         return False
 
     def _handle_rel(self, message):
-        # TODO implement this
         split_message = message.split(self.DELIMITER)
         if len(split_message) != 2:
             self._logger.warning(f"Unexpected message: {message}")
         else:
-            button_press_bytes = self._get_button_press_bytes(message)
             x_bytes = self.rel_bytes(split_message[0])
             y_bytes = self.rel_bytes(split_message[1])
-            complete_report = self.rel_report_id + button_press_bytes + x_bytes + y_bytes + NULL_CHAR*2
+            complete_report = self._get_bytes_for_message(self.rel_report_id, x_bytes, y_bytes)
             self._send_all_bytes([complete_report])
             return True
         return False
 
-    def _get_button_press_bytes(self, message):
-        # TODO implement buttons
-        return NULL_CHAR
+    def _get_bytes_for_message(self, report_id, x_bytes, y_bytes):
+        button_press_bytes = self._get_button_press_bytes()
+        complete_report = report_id + button_press_bytes + x_bytes + y_bytes + NULL_CHAR * 2
+        return complete_report
+
+    def get_key_down_bytes(self, key):
+        if key not in self.buttons_down:
+            self.buttons_down.append(key)
+        return self._get_bytes_for_message(self.rel_report_id, NULL_CHAR, NULL_CHAR)
+
+    def get_key_up_bytes(self, key):
+        if key in self.buttons_down:
+            self.buttons_down.remove(key)
+        return self._get_bytes_for_message(self.rel_report_id, NULL_CHAR, NULL_CHAR)
+
+    def _get_button_press_bytes(self):
+        total = 0
+        for key in self.buttons_down:
+            total = total + keys.MOUSE_BUTTONS.get(key, 0)
+        self._logger.info(f"Total: {total}")
+        return bytes([total])
 
     def abs_bytes(self, value):
         return struct.pack(">B", int(value))
