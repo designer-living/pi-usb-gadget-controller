@@ -4,8 +4,14 @@ cd /sys/kernel/config/usb_gadget
 mkdir -p my_gadget
 cd my_gadget
 
-echo 0x1d6b > idVendor
-echo 0x0104 > idProduct
+# These are the details for immitating Google Chromecast Remote
+echo 0x0957 > idVendor
+echo 0x0001 > idProduct
+# These are the generic buttons and should be used
+#echo 0x1d6b > idVendor
+#echo 0x0104 > idProduct
+
+
 
 mkdir -p strings/0x409
 echo "deadbeefdeadbeef" > strings/0x409/serialnumber
