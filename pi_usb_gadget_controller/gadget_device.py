@@ -51,7 +51,7 @@ class GadgetDevice(ABC):
         if fd is None:
             self._logger.warning(f"No where to send {action} to")
         else:
-            self._logger.debug(f"Sending as fd not None {action}")
+            self._logger.debug(f"Sending to {fd.name} not None {action}")
             fd.write(action)
 
 
