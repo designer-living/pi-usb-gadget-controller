@@ -1,0 +1,2 @@
+sudo service usb_gadget_controller start
+sudo service usb_gadget_controller stop
