@@ -38,8 +38,8 @@ setup(
     long_description_content_type='text/markdown',
     author = "Foxy82",
     author_email = "foxy82.github@gmail.com",
-    url = "https://github.com/foxy82/pi-usb-gadget-controller",
-    download_url = f'https://github.com/foxy82/pi-usb-gadget-controller/{version}.tar.gz',
+    url = "https://github.com/designer-living/pi-usb-gadget-controller",
+    download_url = f'https://github.com/designer-living/pi-usb-gadget-controller/{version}.tar.gz',
     install_requires = [
             'aiohttp',
         ],
